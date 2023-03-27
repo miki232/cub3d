@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 17:14:41 by mtoia             #+#    #+#             */
-/*   Updated: 2023/03/22 16:14:06 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/03/27 16:48:50 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,33 @@ char	*ft_skip(char *line)
 	return (line + i);
 }
 
-int	ft_line(char *line, t_map *map)
+void	map_load(t_data *mlx, char *line)
 {
 	int i;
-	(void)map;
+
+	i = 0;
+	if (mlx->map->map == NULL)
+		mlx->map->map = ft_strdup(line);
+	else
+		mlx->map->map = ft_strjoin(mlx->map->map, line);
+}
+
+int	ft_line(char *line, t_data *mlx)
+{
+	int i;
 	i = 0;
 	if (line == NULL)
 		return (-1);
 	if (line[i] == 'N' && line[i + 1] == 'O')
-		map->no_texture = ft_strdup(ft_skip(line));
+		mlx->map->no_texture = ft_strdup(ft_skip(line));
 	else if (line[i] == 'S' && line[i + 1] == 'O')
-		map->so_texture = ft_strdup(ft_skip(line));
+		mlx->map->so_texture = ft_strdup(ft_skip(line));
 	else if (line[i] == 'W' && line[i + 1] == 'E')
-		map->we_texture = ft_strdup(ft_skip(line));
+		mlx->map->we_texture = ft_strdup(ft_skip(line));
 	else if (line[i] == 'E' && line[i + 1] == 'A')
-		map->ea_texture = ft_strdup(ft_skip(line));
+		mlx->map->ea_texture = ft_strdup(ft_skip(line));
+	else if (line[i] == '1')
+		map_load(mlx, line); 
 	return (1);
 }
 
@@ -56,12 +68,11 @@ void    ft_freeline(char *line)
         free(&line[i]);
 }
 
-void	map_parser(t_map *map, t_data *mlx, char *file)
+void	ft_map_parser(t_data *mlx, char *file)
 {
 	char	*line;
 	int		ret;
 	int		fd;
-	(void)mlx;
 	
 	ret = 0;
 	line = NULL;
@@ -71,13 +82,14 @@ void	map_parser(t_map *map, t_data *mlx, char *file)
 	while (ret == 1)
 	{
 		line = get_next_line(fd);
-		ret = ft_line(line, map);
+		ret = ft_line(line, mlx);
 		free(line);
 	}
     ft_freeline(line);
-	printf("%s\n", map->no_texture);
-	printf("%s\n", map->so_texture);
-	printf("%s\n", map->we_texture);
-	printf("%s\n", map->ea_texture);
+	// printf("%s\n", map->no_texture);
+	// printf("%s\n", map->so_texture);
+	// printf("%s\n", map->we_texture);
+	// printf("%s\n", map->ea_texture);
+	// printf("%s\n", map->map);
 	close(fd);
 }

@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:36:30 by mtoia             #+#    #+#             */
-/*   Updated: 2023/03/22 16:04:41 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/03/27 17:11:10 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ typedef struct	s_map
 	char	*so_texture;
 	char	*we_texture;
 	char	*ea_texture;
-	
+	int		player_x;
+	int		player_y;
 }			t_map;
 
 typedef struct	s_data
@@ -44,12 +45,19 @@ typedef struct	s_data
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
+	t_map	*map;
+
 }				t_data;
 
 /// mlx draw
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 /// map parser
-void	map_parser(t_map *map, t_data *mlx, char *file);
+void	ft_map_parser(t_data *mlx, char *file);
+/// engine & creation
+void	ft_create_level(t_data *mlx);
+
+//utils
+void    ft_square(t_data *mlx, int colo);
 
 #endif
