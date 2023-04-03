@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:39:17 by mtoia             #+#    #+#             */
-/*   Updated: 2023/03/31 13:55:18 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/03 18:19:17 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ void	ft_free(t_map *map)
 int	main(int argc, char **argv)
 {
 	t_data	mlx;
+	(void)argv;
 	mlx.map = (t_map *)calloc(1, sizeof(t_map));
 	if (argc != 2)
 	{
@@ -44,7 +45,6 @@ int	main(int argc, char **argv)
 	ft_create_level(&mlx);
 	// verline(&mlx, 5, 1, 50, 0xFFFFFFF);
 	// ft_free(&map);
-	printf("player found at x: %d y: %d\n", mlx.map->player_x, mlx.map->player_y);
 	
-	mlx_loop(&mlx.mlx_ptr);
+	mlx_loop(mlx.mlx_ptr);
 }

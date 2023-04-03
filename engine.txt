@@ -1,0 +1,233 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    engine.txt                                         :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2023/03/27 15:18:20 by mtoia             #+#    #+#              #
+#    Updated: 2023/04/03 17:10:25 by mtoia            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+#include "../include/cub.h"
+
+void	ft_get_player_pos(t_data *mlx)
+{
+	int	i;
+	int	x;
+	int	y;
+
+	i = 0;
+	x = 0;
+	y = 0;
+	while (mlx->map->map[i])
+	{
+		if (mlx->map->map[i] == '\n')
+		{
+			x = 0;
+			y++;
+		}
+		else if (mlx->map->map[i] == ' ' || mlx->map->map[i] == '1')
+		{
+			x++;
+		}
+		if (mlx->map->map[i] == 'N')
+		{
+			mlx->map->player_x = x;
+			mlx->map->player_y = y;
+		}
+		i++;
+	}
+	
+}
+
+void	verline(t_data *mlx, int x, int y1, int y2, int color)
+{
+	while (y1 <= y2)
+	{
+		my_mlx_pixel_put(mlx, x, y1, color);
+		y1++;
+	}
+	// mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
+}
+
+#define mapWidth 24
+#define mapHeight 24
+#define screenWidth 640
+#define screenHeight 480
+
+int worldMap[mapWidth][mapHeight]=
+{
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,2,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,3,0,0,0,3,0,0,0,1},
+  {1,0,0,0,0,0,2,0,0,0,2,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,2,2,0,2,2,0,0,0,0,3,0,3,0,3,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,5,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,0,0,0,0,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,4,4,4,4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
+  {1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
+};
+
+void	clear(t_data *mlx)
+{
+	mlx_destroy_image(mlx->mlx_ptr, mlx->img);
+	mlx->img = mlx_new_image(mlx->mlx_ptr, WIDTH, HEIGHT);
+	mlx->addr =	mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
+}
+
+int	ft_key(int key, t_data *mlx)
+{
+	if (key == 124)
+	{
+		
+		double olddirx = mlx->map->dirx;
+		printf("%f\n", olddirx);
+		mlx->map->dirx = mlx->map->dirx * cos(-mlx->map->rotspeed) - mlx->map->diry * sin(-mlx->map->rotspeed);
+		mlx->map->diry = olddirx * sin(-mlx->map->rotspeed) + mlx->map->diry * cos(-mlx->map->rotspeed);
+		double oldplanex = mlx->map->planex;
+		mlx->map->planex = mlx->map->planex * cos(-mlx->map->rotspeed) - mlx->map->planey * sin(-mlx->map->rotspeed);
+		mlx->map->planey = oldplanex * sin(-mlx->map->rotspeed) + mlx->map->planey * cos(-mlx->map->rotspeed);
+	}
+	if (key == 126)
+	{
+		if (worldMap[(int)(mlx->map->player_x + mlx->map->dirx * mlx->map->movespeed)][(int)(mlx->map->player_y)] == 0)
+			mlx->map->player_x += mlx->map->dirx * mlx->map->movespeed;
+		if (worldMap[(int)(mlx->map->player_x)][(int)(mlx->map->player_y + mlx->map->diry * mlx->map->movespeed)] == 0)
+			mlx->map->player_y += mlx->map->diry * mlx->map->movespeed;
+	}
+	return (0);
+}
+
+
+int cast(t_data *mlx)
+{
+	int x;
+
+	x = 0;
+	while (x < WIDTH)
+	{
+		mlx->map->camerax = 2 * x / (double)WIDTH - 1;
+		mlx->map->raydirx = mlx->map->dirx + mlx->map->planex * mlx->map->camerax;
+		mlx->map->raydiry = mlx->map->diry + mlx->map->planey * mlx->map->camerax;
+		mlx->map->mapx = (int)(mlx->map->player_x);
+		mlx->map->mapy = (int)(mlx->map->player_y);
+		if (mlx->map->raydirx == 0)
+			mlx->map->deltadistx = 1e30;
+		else
+			mlx->map->deltadistx = fabs(1 / mlx->map->raydirx);
+		if (mlx->map->raydiry == 0)
+			mlx->map->deltadisty = 1e30;
+		else
+			mlx->map->deltadisty = fabs(1 / mlx->map->raydiry);
+		//calculate step and initial sideDist
+		mlx->map->hit = 0;
+		if (mlx->map->raydirx < 0)
+		{
+			mlx->map->stepx = -1;
+			mlx->map->sidedistx = (mlx->map->player_x - mlx->map->mapx) * mlx->map->deltadistx;
+		}
+		else
+		{
+			mlx->map->stepx = 1;
+			mlx->map->sidedistx = (mlx->map->mapx + 1.0 - mlx->map->player_x) * mlx->map->deltadistx;
+		}
+		if (mlx->map->raydiry < 0)
+		{
+			mlx->map->stepy = -1;
+			mlx->map->sidedisty = (mlx->map->player_y - mlx->map->mapy) * mlx->map->deltadisty;
+		}
+		else
+		{
+			mlx->map->stepy = 1;
+			mlx->map->sidedisty = (mlx->map->mapy + 1.0 - mlx->map->player_y) * mlx->map->deltadisty;
+		}
+		//perform DDA
+		while (mlx->map->hit == 0)
+		{
+			if (mlx->map->sidedistx < mlx->map->sidedisty)
+			{
+				mlx->map->sidedistx += mlx->map->deltadistx;
+				mlx->map->mapx += mlx->map->stepx;
+				mlx->map->side = 0;
+			}
+			else
+			{
+				mlx->map->sidedisty += mlx->map->deltadisty;
+				mlx->map->mapy += mlx->map->stepy;
+				mlx->map->side = 1;
+			}
+			//Check if ray has hit a wall
+			if (worldMap[mlx->map->mapx][mlx->map->mapy] > 0)
+				mlx->map->hit = 1;
+		}
+		//Calculate distance projected on camera direction (oblique distance will give fisheye effect!)
+		if (mlx->map->side == 0)
+			mlx->map->perpwalldist = (mlx->map->sidedistx - mlx->map->deltadistx);
+		else
+			mlx->map->perpwalldist = (mlx->map->sidedisty - mlx->map->deltadisty);
+		//Calculate height of line to draw on screen
+		mlx->map->lineheight = (int)(HEIGHT / mlx->map->perpwalldist);
+		//calculate lowest and highest pixel to fill in current stripe
+		mlx->map->drawstart = -mlx->map->lineheight / 2 + HEIGHT / 2;
+		if (mlx->map->drawstart < 0)
+			mlx->map->drawstart = 0;
+		mlx->map->drawend = mlx->map->lineheight / 2 + HEIGHT / 2;
+		if (mlx->map->drawend >= HEIGHT)
+			mlx->map->drawend = HEIGHT - 1;
+		verline(mlx, x, mlx->map->drawstart, mlx->map->drawend, 0x00FF00);
+		mlx->map->oldtime = mlx->map->time;
+		mlx->map->elapsedTicks = clock() - mlx->map->start;
+		mlx->map->time = (double)(mlx->map->elapsedTicks / 1.0);
+		mlx->map->frametime = (mlx->map->time - mlx->map->oldtime) / 10000.0;
+		mlx->map->movespeed = mlx->map->frametime * 5.0;
+		mlx->map->rotspeed = mlx->map->frametime * 3.0; //the constant value is in radians
+		//printf("FPS: %f\n", 1.0 / mlx->map->frametime);
+		printf("%f\n", mlx->map->dirx);
+		mlx_hook(mlx->win_ptr, 2, 0, ft_key, mlx);
+		mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
+		x++;
+	}
+	clear(mlx);
+	return (0);
+}
+
+void	ft_create_level(t_data *mlx)
+{
+	// ft_get_player_pos(mlx);
+	mlx->map->player_x = 22;
+	mlx->map->player_y = 12;
+	mlx->map->dirx = -1;
+	mlx->map->diry = 0;
+	mlx->map->planex = 0;
+	mlx->map->planey = 0.66;
+	mlx->map->time = 0;
+	mlx->map->oldtime = 0;
+	mlx->map->frametime = 0;
+	mlx->map->hit = 0;
+	mlx->map->start = clock();
+	mlx_loop_hook(mlx->mlx_ptr, cast, mlx);
+}
+
+
+
+
+
+
+	// ft_square(mlx, 0xFFFF00);

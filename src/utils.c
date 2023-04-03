@@ -6,26 +6,62 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 15:21:59 by mtoia             #+#    #+#             */
-/*   Updated: 2023/03/27 16:36:58 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/03 18:53:38 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub.h"
 
-void    ft_square(t_data *mlx, int colo)
+void    ft_square(t_data *mlx, int x, int y, int colo)
 {
-    int x;
-    int y;
+    int tempx;
+    int tempy;
 
-    y = 0;
-    while (y < 10)
+    tempx = x;
+    tempy = y;
+    while (tempy < (y + 32))
     {
-        x = 0;
-        while (x < 10)
+        tempx = x;
+        while (tempx < (x + 32))
         {
-            my_mlx_pixel_put(mlx, x, y, colo);
-            x++;
+            my_mlx_pixel_put(mlx, tempx, tempy, colo);
+            tempx++;
         }
-        y++;
+        tempy++;
+    }
+}
+
+//for line drawing, only for dev purposes
+void drawline(int x0, int y0, int x1, int y1, t_data *mlx)
+{
+  int dx =  abs (x1 - x0), sx = x0 < x1 ? 1 : -1;
+  int dy = -abs (y1 - y0), sy = y0 < y1 ? 1 : -1; 
+  int err = dx + dy, e2; /* error value e_xy */
+ 
+  for (;;){  /* loop */
+    my_mlx_pixel_put(mlx, x0, y0, 0xFFFFFF);
+    if (x0 == x1 && y0 == y1) break;
+    e2 = 2 * err;
+    if (e2 >= dy) { err += dy; x0 += sx; } /* e_xy+e_x > 0 */
+    if (e2 <= dx) { err += dx; y0 += sy; } /* e_xy+e_y < 0 */
+  }
+}
+
+void    ft_player(t_data *mlx, int x, int y, int colo)
+{
+    int tempx;
+    int tempy;
+
+    tempx = x;
+    tempy = y;
+    while (tempy < (y + 20))
+    {
+        tempx = x;
+        while (tempx < (x + 20))
+        {
+            my_mlx_pixel_put(mlx, tempx, tempy, colo);
+            tempx++;
+        }
+        tempy++;
     }
 }

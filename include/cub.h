@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:36:30 by mtoia             #+#    #+#             */
-/*   Updated: 2023/03/31 13:46:17 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/03 19:00:44 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 
 # define HEIGHT 480
 # define WIDTH 640
+# define PI 3.1415926535
 
 typedef struct	s_map
 {
@@ -35,34 +36,9 @@ typedef struct	s_map
 	char	*ea_texture;
 	int		player_x;
 	int		player_y;
-	int		mapx;
-	int		mapy;
-	int		stepx;
-	int		stepy;
-	int		hit;
-	int		side;
-	int		lineheight;
-	int		drawstart;
-	int		drawend;
-	clock_t start;
-	clock_t elapsedTicks;
-	double	dirx;
-	double	diry;
-	double	planex;
-	double	planey;
-	double	time;
-	double	oldtime;
-	double	frametime;
-	double	camerax;
-	double	raydirx;
-	double	raydiry;
-	double	sidedistx;
-	double	sidedisty;
-	double	deltadistx;
-	double	deltadisty;
-	double	perpwalldist;
-	double	movespeed;
-	double	rotspeed;
+	float	pdx; //delta x
+	float	pdy; //delta y
+	float	pa;	//player angle
 }			t_map;
 
 typedef struct	s_data
@@ -81,6 +57,9 @@ typedef struct	s_data
 
 /// mlx draw
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	clear(t_data *mlx);
+void	verline(t_data *mlx, int x, int y1, int y2, int color);
+void drawline(int x0, int y0, int x1, int y1, t_data *mlx);
 
 /// map parser
 void	ft_map_parser(t_data *mlx, char *file);
@@ -89,6 +68,7 @@ void	ft_create_level(t_data *mlx);
 int	ft_key(int key, t_data *mlx);
 
 //utils
-void    ft_square(t_data *mlx, int colo);
+void    ft_square(t_data *mlx,int x, int y, int colo);
+void    ft_player(t_data *mlx, int x, int y, int colo);
 void	verline(t_data *mlx, int x, int y1, int y2, int color);
 #endif
