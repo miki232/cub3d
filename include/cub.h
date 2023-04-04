@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:36:30 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/03 19:00:44 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/04 17:45:21 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,12 @@
 # include <time.h>
 # include "../mlx/mlx.h"
 
-# define HEIGHT 480
-# define WIDTH 640
+# define HEIGHT 512
+# define WIDTH 1024
 # define PI 3.1415926535
+# define P2 PI / 2
+# define P3 3*PI / 2
+# define DR 0.0174533
 
 typedef struct	s_map
 {
@@ -34,11 +37,30 @@ typedef struct	s_map
 	char	*so_texture;
 	char	*we_texture;
 	char	*ea_texture;
-	int		player_x;
-	int		player_y;
+	int		px; //player x
+	int		py; //player y
 	float	pdx; //delta x
 	float	pdy; //delta y
 	float	pa;	//player angle
+	int		r;
+	int		mx;
+	int		my;
+	int		mp;
+	int		dof;
+	float	rx;
+	float	ry;
+	float	ra;
+	float	xo;
+	float	yo;
+	float	dish;
+	float	hx;
+	float	hy;
+	float	disv;
+	float	vx;
+	float	vy;
+	float 	dist;
+	float	lineh;
+	float	lineo;
 }			t_map;
 
 typedef struct	s_data
@@ -71,4 +93,6 @@ int	ft_key(int key, t_data *mlx);
 void    ft_square(t_data *mlx,int x, int y, int colo);
 void    ft_player(t_data *mlx, int x, int y, int colo);
 void	verline(t_data *mlx, int x, int y1, int y2, int color);
+float   dist(float ax, float ay, float bx, float by, float ang);
+
 #endif
