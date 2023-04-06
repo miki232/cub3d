@@ -1,6 +1,7 @@
 # cub3d
 
-push del 03/04/2023
+push del 06/04/2023
+map(char*) to mapw(int*)
 
-Inizializzatzioer mlx e parser della mappa, quasi fatto
-iniziato a creare il motore grafico by 3dSaGE
+
+da provare se funziona anche in char*
