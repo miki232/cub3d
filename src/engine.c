@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 15:18:20 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/06 17:31:51 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/06 17:57:55 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -295,16 +295,65 @@ int ft_draw(t_data *mlx)
 	return (0);
 }
 
+int	ft_map_len(t_map *map)
+{
+	int i;
+	int nl;
+
+	nl = 0;
+	i = 0;
+	while (map->map[i] != '\0')
+	{
+		if (map->map[i] == '\n')
+			nl++;
+		i++;
+	}
+	map->mapy = nl;
+	map->mapx = (i - nl) / nl;
+	return (i - nl);
+}
+
+void	ft_map_convert(t_data *mlx)
+{
+	int i;
+	int m_len;
+
+	i = 0;
+	m_len = ft_map_len(mlx->map);
+	mlx->map->mapw = (int *)ft_calloc(m_len, sizeof(int));
+	while (mlx->map->map[i] != '\0')
+	{
+		if (mlx->map->map[i] == '\n')
+		{
+			i++;
+			continue;
+		}
+		mlx->map->mapw[i] = ft_atoi(&mlx->map->map[i]);
+		i++;
+	}
+	i = 0;
+	printf("%d\n", m_len);
+	printf("%d\n", mlx->map->mapy);
+	printf("%d\n", mlx->map->mapx);
+	// while (i < m_len)
+	// {
+	// 	printf("%d", mlx->map->mapw[i]);
+	// 	i++;
+	// }
+}
+
 void	ft_create_level(t_data *mlx)
 {
 	mlx->map->color = 0x00FFFF;
-	ft_get_player_pos(mlx);
-	mlx->map->pa = 90;
-	// mlx->map->px = 150;
-	// mlx->map->py = 400;
-	mlx->map->pdx = cos(degtorad(mlx->map->pa));
-	mlx->map->pdy = sin(degtorad(mlx->map->pa));
-	mlx_loop_hook(mlx->mlx_ptr, ft_draw, mlx);
+	ft_map_convert(mlx);
+	// ft_Ft(mlx);
+	// ft_get_player_pos(mlx);
+	// mlx->map->pa = 90;
+	// // mlx->map->px = 150;
+	// // mlx->map->py = 400;
+	// mlx->map->pdx = cos(degtorad(mlx->map->pa));
+	// mlx->map->pdy = sin(degtorad(mlx->map->pa));
+	// mlx_loop_hook(mlx->mlx_ptr, ft_draw, mlx);
 
 	// ft_square(mlx, 0, 0, 0x00FF0000);
 	printf("player found at x: %d y: %d\n", mlx->map->px, mlx->map->py);
