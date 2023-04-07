@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:36:30 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/06 15:16:41 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/07 16:01:16 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,10 @@ typedef struct	s_map
 	float	pdx; //delta x
 	float	pdy; //delta y
 	float	pa;	//player angle
+	int		*mapw;
+	int		mapx;
+	int		mapy;
+	int		maps;
 	int		r;
 	int		mx;
 	int		my;
@@ -77,6 +81,15 @@ typedef struct	s_map
 	float 	tx;
 }			t_map;
 
+typedef struct s_key
+{
+	int		w;
+	int		a;
+	int		s;
+	int		d;
+}		t_key;
+
+
 typedef struct	s_data
 {
     void	*mlx_ptr;
@@ -86,10 +99,34 @@ typedef struct	s_data
 	int		bits_per_pixel;
 	int		line_length;
 	int		endian;
-	
+	t_key	*key;
 	t_map	*map;
 
 }				t_data;
+
+typedef enum e_keys_map
+{
+	KB_PAGE_UP = 116,
+	KB_PAGE_DOWN = 121,
+	W = 13,
+	A = 0,
+	S = 1,
+	D = 2,
+	ESC = 53,
+	PLUS = 69,
+	MINUS = 78,
+	RIGHT = 123,
+	LEFT = 124,
+	UP = 125,
+	DOWN = 126,
+	ON_KEYUP = 3,
+	ON_MOUSEDOWN = 4,
+	ON_MOUSEUP = 5,
+	ON_MOUSEMOVE = 6,
+	ON_EXPOSE = 12,
+	ON_DESTROY = 17
+}	t_keys_map;
+
 
 /// mlx draw
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
@@ -99,14 +136,25 @@ void drawline(int x0, int y0, int x1, int y1, t_data *mlx);
 
 /// map parser
 void	ft_map_parser(t_data *mlx, char *file);
+void	ft_map_convert(t_data *mlx);
+int	ft_map_len(t_map *map);
+void	ft_map_draw(t_data *mlx);
+
 /// engine & creation
 void	ft_create_level(t_data *mlx);
 int	ft_key(int key, t_data *mlx);
+void    ft_key_hook(t_data *mlx);
 
 //utils
 void    ft_square(t_data *mlx,int x, int y, int colo);
 void    ft_player(t_data *mlx, int x, int y, int colo);
 void	verline(t_data *mlx, int x, int y1, int y2, int color);
 float   dist(float ax, float ay, float bx, float by, float ang);
+float	ft_fixang(float a);
+float	degtorad(float a);
+
+//key handler
+int	ft_key_u(int key, t_data *mlx);
+int	ft_key_d(int key, t_data *mlx);
 
 #endif

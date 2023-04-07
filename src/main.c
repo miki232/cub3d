@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:39:17 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/06 15:17:34 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/07 14:40:38 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	main(int argc, char **argv)
 	t_data	mlx;
 	(void)argv;
 	mlx.map = (t_map *)calloc(1, sizeof(t_map));
+	mlx.key = (t_key *)calloc(1, sizeof(t_key));
 	if (argc != 2)
 	{
 		printf("Error\n");

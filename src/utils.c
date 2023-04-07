@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 15:21:59 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/06 17:28:43 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/07 14:47:24 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,18 @@ void    ft_player(t_data *mlx, int x, int y, int colo)
         }
         tempy++;
     }
+}
+
+float	ft_fixang(float a)
+{
+	if (a > 359)
+		a -= 360;
+	if (a < 0)
+		a += 360;
+	return (a);
+}
+
+float	degtorad(float a)
+{
+	return (a * M_PI / 180.0);
 }

@@ -6,23 +6,11 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 15:18:20 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/06 17:31:51 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/07 16:03:36 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub.h"
-
-int mawp[]=           //the map array. Edit to change level but keep the outer walls
-{
-    1,1,1,1,1,2,2,3,
-    1,0,0,1,0,0,0,1,
-    1,0,0,4,0,2,0,1,
-    1,0,0,1,0,0,0,1,
-    1,0,0,0,0,2,0,1,
-    1,0,0,0,0,0,0,1,
-    1,0,0,0,0,0,0,1,
-    1,1,1,1,1,1,1,1,
-};
 
 int mapX=8, mapY=8, mapS=64; //map size and scale
 int depth[120];
@@ -54,86 +42,97 @@ void	ft_get_player_pos(t_data *mlx)
 		}
 		i++;
 	}
-	printf("px = %d\n", mlx->map->px);
-	printf("py = %d\n", mlx->map->py);
 }
 
-float	degtorad(float a)
+void	ft_vert_line(t_data *mlx)
 {
-	return (a * M_PI / 180.0);
-}
-
-float	ft_fixang(float a)
-{
-	if (a > 359)
-		a -= 360;
-	if (a < 0)
-		a += 360;
-	return (a);
-}
-
-int	ft_key(int key, t_data *mlx)
-{
-	if (key == 123) //sinistra
+	mlx->map->dof = 0;
+	mlx->map->disv = 1000000;
+	mlx->map->tan = tan(degtorad(mlx->map->ra));
+	if (cos(degtorad(mlx->map->ra)) > 0.001)
 	{
-		mlx->map->pa -= 0.1;
-		if (mlx->map->pa < 0)
-			mlx->map->pa += 2 * PI;
-		mlx->map->pdx = cos(mlx->map->pa) * 5;
-		mlx->map->pdy = sin(mlx->map->pa) * 5;
+		mlx->map->rx = (((int)mlx->map->px >> 6) << 6) + 64;
+		mlx->map->ry = (mlx->map->px - mlx->map->rx) * mlx->map->tan + mlx->map->py;
+		mlx->map->xo = 64;
+		mlx->map->yo = -mlx->map->xo * mlx->map->tan;
 	}
-	if (key == 124) //destra
+	else if (cos(degtorad(mlx->map->ra)) < -0.001)
 	{
-		mlx->map->pa -= 8 * 0.8;
-		mlx->map->pa = ft_fixang(mlx->map->pa);
-		mlx->map->pdx = cos(degtorad(mlx->map->pa));
-		mlx->map->pdy = -sin(degtorad(mlx->map->pa));
+		mlx->map->rx = (((int)mlx->map->px >> 6) << 6) -0.0001;
+		mlx->map->ry = (mlx->map->px - mlx->map->rx) * mlx->map->tan + mlx->map->py;
+		mlx->map->xo = -64;
+		mlx->map->yo = -mlx->map->xo * mlx->map->tan;
 	}
-	if (key == 125) //giu
+	else
 	{
-		mlx->map->py -= mlx->map->pdy * 7;
-		mlx->map->px -= mlx->map->pdx * 7;
+		mlx->map->rx = mlx->map->px;
+		mlx->map->ry = mlx->map->py;
+		mlx->map->dof = 8;
 	}
-	if (key == 126) //su
+	while (mlx->map->dof < 8)
 	{
-		mlx->map->py += mlx->map->pdy * 7;
-		mlx->map->px += mlx->map->pdx * 7;
-	}
-	return (0);
-}
-
-void	ft_map_draw(t_data *mlx)
-{
-	int i;
-	int x;
-	int y;
-
-	i = 0;
-	x = 0;
-	y = 0;
-	while (mlx->map->map[i])
-	{
-		if (mlx->map->map[i] >= '1')
-			ft_square(mlx, x, y, 0x00FF0000);
-		else if (mlx->map->map[i] == '0')
-			ft_square(mlx, x, y, 0x00000FF0);
-		else if (mlx->map->map[i] == 'N')
+		mlx->map->mx = (int)(mlx->map->rx) >> 6;
+		mlx->map->my = (int)(mlx->map->ry) >> 6;
+		mlx->map->mp = mlx->map->my * mlx->map->mapx + mlx->map->mx;
+		if (mlx->map->mp > 0 && mlx->map->mp < mlx->map->mapx * mlx->map->mapy && mlx->map->mapw[mlx->map->mp] > 0)
 		{
-			ft_square(mlx, x, y, 0x00000FF0);
-
-		}
-		if (mlx->map->map[i] == '\n')
-		{
-			x = 0;
-			y += 10;
+			mlx->map->vmt = mlx->map->mapw[mlx->map->mp] - 1;
+			mlx->map->disv = cos(degtorad(mlx->map->ra)) * (mlx->map->rx - mlx->map->px) - sin(degtorad(mlx->map->ra)) * (mlx->map->ry - mlx->map->py);
+			mlx->map->dof = 8;
 		}
 		else
-			x += 10;
-		i++;
+		{
+			mlx->map->rx += mlx->map->xo;
+			mlx->map->ry += mlx->map->yo;
+			mlx->map->dof += 1;
+		}
 	}
-	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
 }
 
+void	ft_hor_line(t_data *mlx)
+{
+	mlx->map->dof = 0;
+	mlx->map->dish = 1000000;
+	mlx->map->tan = 1.0 / mlx->map->tan;
+	if (sin(degtorad(mlx->map->ra)) > 0.001)
+	{
+		mlx->map->ry = (((int)mlx->map->py >> 6) << 6) -0.0001;
+		mlx->map->rx = (mlx->map->py - mlx->map->ry) * mlx->map->tan + mlx->map->px;
+		mlx->map->yo = -64;
+		mlx->map->xo = -mlx->map->yo * mlx->map->tan;
+	}
+	else if (sin(degtorad(mlx->map->ra)) < -0.001)
+	{
+		mlx->map->ry = (((int)mlx->map->py >> 6) << 6) + 64;
+		mlx->map->rx = (mlx->map->py - mlx->map->ry) * mlx->map->tan + mlx->map->px;
+		mlx->map->yo = 64;
+		mlx->map->xo = -mlx->map->yo * mlx->map->tan;
+	}
+	else
+	{
+		mlx->map->rx = mlx->map->px;
+		mlx->map->ry = mlx->map->py;
+		mlx->map->dof = 8;
+	}
+	while (mlx->map->dof < 8)
+	{
+		mlx->map->mx = (int)(mlx->map->rx) >> 6;
+		mlx->map->my = (int)(mlx->map->ry) >> 6;
+		mlx->map->mp = mlx->map->my * mlx->map->mapx + mlx->map->mx;
+		if (mlx->map->mp > 0 && mlx->map->mp < mlx->map->mapx * mlx->map->mapy && mlx->map->mapw[mlx->map->mp] > 0)
+		{
+			mlx->map->hmt = mlx->map->mapw[mlx->map->mp] - 1;
+			mlx->map->dish = cos(degtorad(mlx->map->ra)) * (mlx->map->rx - mlx->map->px) - sin(degtorad(mlx->map->ra)) * (mlx->map->ry - mlx->map->py);
+			mlx->map->dof = 8;
+		}
+		else
+		{
+			mlx->map->rx += mlx->map->xo;
+			mlx->map->ry += mlx->map->yo;
+			mlx->map->dof += 1;
+		}
+	}
+}
 
 void	ft_raycast(t_data *mlx)
 {
@@ -146,91 +145,10 @@ void	ft_raycast(t_data *mlx)
 		mlx->map->hmt = 0;
 		mlx->map->mv = 0;
 		mlx->map->mh = 0;
-		mlx->map->dof = 0;
-		mlx->map->disv = 1000000;
-		mlx->map->tan = tan(degtorad(mlx->map->ra));
-		if (cos(degtorad(mlx->map->ra)) > 0.001)
-		{
-			mlx->map->rx = (((int)mlx->map->px >> 6) << 6) + 64;
-			mlx->map->ry = (mlx->map->px - mlx->map->rx) * mlx->map->tan + mlx->map->py;
-			mlx->map->xo = 64;
-			mlx->map->yo = -mlx->map->xo * mlx->map->tan;
-		}
-		else if (cos(degtorad(mlx->map->ra)) < -0.001)
-		{
-			mlx->map->rx = (((int)mlx->map->px >> 6) << 6) -0.0001;
-			mlx->map->ry = (mlx->map->px - mlx->map->rx) * mlx->map->tan + mlx->map->py;
-			mlx->map->xo = -64;
-			mlx->map->yo = -mlx->map->xo * mlx->map->tan;
-		}
-		else
-		{
-			mlx->map->rx = mlx->map->px;
-			mlx->map->ry = mlx->map->py;
-			mlx->map->dof = 8;
-		}
-		while (mlx->map->dof < 8)
-		{
-			mlx->map->mx = (int)(mlx->map->rx) >> 6;
-			mlx->map->my = (int)(mlx->map->ry) >> 6;
-			mlx->map->mp = mlx->map->my * mapX + mlx->map->mx;
-			if (mlx->map->mp > 0 && mlx->map->mp < mapX * mapY && mawp[mlx->map->mp] > 0)
-			{
-				mlx->map->vmt = mawp[mlx->map->mp] - 1;
-				mlx->map->disv = cos(degtorad(mlx->map->ra)) * (mlx->map->rx - mlx->map->px) - sin(degtorad(mlx->map->ra)) * (mlx->map->ry - mlx->map->py);
-				mlx->map->dof = 8;
-			}
-			else
-			{
-				mlx->map->rx += mlx->map->xo;
-				mlx->map->ry += mlx->map->yo;
-				mlx->map->dof += 1;
-			}
-		}
+		ft_vert_line(mlx);
 		mlx->map->vx = mlx->map->rx;
 		mlx->map->vy = mlx->map->ry;
-		///hor
-		mlx->map->dof = 0;
-		mlx->map->dish = 1000000;
-		mlx->map->tan = 1.0 / mlx->map->tan;
-		if (sin(degtorad(mlx->map->ra)) > 0.001)
-		{
-			mlx->map->ry = (((int)mlx->map->py >> 6) << 6) -0.0001;
-			mlx->map->rx = (mlx->map->py - mlx->map->ry) * mlx->map->tan + mlx->map->px;
-			mlx->map->yo = -64;
-			mlx->map->xo = -mlx->map->yo * mlx->map->tan;
-		}
-		else if (sin(degtorad(mlx->map->ra)) < -0.001)
-		{
-			mlx->map->ry = (((int)mlx->map->py >> 6) << 6) + 64;
-			mlx->map->rx = (mlx->map->py - mlx->map->ry) * mlx->map->tan + mlx->map->px;
-			mlx->map->yo = 64;
-			mlx->map->xo = -mlx->map->yo * mlx->map->tan;
-		}
-		else
-		{
-			mlx->map->rx = mlx->map->px;
-			mlx->map->ry = mlx->map->py;
-			mlx->map->dof = 8;
-		}
-		while (mlx->map->dof < 8)
-		{
-			mlx->map->mx = (int)(mlx->map->rx) >> 6;
-			mlx->map->my = (int)(mlx->map->ry) >> 6;
-			mlx->map->mp = mlx->map->my * mapX + mlx->map->mx;
-			if (mlx->map->mp > 0 && mlx->map->mp < mapX * mapY && mawp[mlx->map->mp] > 0)
-			{
-				mlx->map->hmt = mawp[mlx->map->mp] - 1;
-				mlx->map->dish = cos(degtorad(mlx->map->ra)) * (mlx->map->rx - mlx->map->px) - sin(degtorad(mlx->map->ra)) * (mlx->map->ry - mlx->map->py);
-				mlx->map->dof = 8;
-			}
-			else
-			{
-				mlx->map->rx += mlx->map->xo;
-				mlx->map->ry += mlx->map->yo;
-				mlx->map->dof += 1;
-			}
-		}
+		ft_hor_line(mlx);
 		mlx->map->color = 0x008000;
 		mlx->map->shade = 1;
 		if (mlx->map->disv < mlx->map->dish)
@@ -244,7 +162,7 @@ void	ft_raycast(t_data *mlx)
 		}
 		mlx->map->ca = ft_fixang(mlx->map->pa - mlx->map->ra);
 		mlx->map->dish = mlx->map->dish * cos(degtorad(mlx->map->ca));
-		mlx->map->lineh = (mapS * 322) / mlx->map->dish;
+		mlx->map->lineh = (mlx->map->mapx * mlx->map->mapy * 322) / mlx->map->dish;
 		mlx->map->ty_step = 32.0 / (float)mlx->map->lineh;
 		mlx->map->ty_off = 0;
 		if (mlx->map->lineh > 322)
@@ -289,24 +207,23 @@ void	ft_raycast(t_data *mlx)
 int ft_draw(t_data *mlx)
 {
 	clear(mlx);
+	ft_key_hook(mlx);
 	ft_map_draw(mlx);
 	ft_raycast(mlx);
-	mlx_hook(mlx->win_ptr, 2, (1L << 0), ft_key, mlx);
+	mlx_hook(mlx->win_ptr, 2, (1L << 0), ft_key_d, mlx);
+    mlx_hook(mlx->win_ptr, 3, 1L << 1, ft_key_u, mlx);
 	return (0);
 }
 
 void	ft_create_level(t_data *mlx)
 {
 	mlx->map->color = 0x00FFFF;
+	ft_map_convert(mlx);
 	ft_get_player_pos(mlx);
-	mlx->map->pa = 90;
-	// mlx->map->px = 150;
-	// mlx->map->py = 400;
+	mlx->map->pa = 0;
 	mlx->map->pdx = cos(degtorad(mlx->map->pa));
 	mlx->map->pdy = sin(degtorad(mlx->map->pa));
 	mlx_loop_hook(mlx->mlx_ptr, ft_draw, mlx);
 
-	// ft_square(mlx, 0, 0, 0x00FF0000);
-	printf("player found at x: %d y: %d\n", mlx->map->px, mlx->map->py);
-	// mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 50, 0);
+	printf("player found at x: %d y: %d\n", mlx->map->mapx, mlx->map->mapy);
 }
