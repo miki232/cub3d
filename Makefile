@@ -6,7 +6,7 @@
 #    By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 16:40:12 by mtoia             #+#    #+#              #
-#    Updated: 2023/03/31 12:10:02 by mtoia            ###   ########.fr        #
+#    Updated: 2023/04/07 16:04:03 by mtoia            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,9 +16,9 @@ C_LGRN = \033[92m
 C_LMGN = \033[95m
 C_END = \033[0m
 
-SRC = src/main.c src/map.c src/engine.c src/daw.c src/utils.c
+SRC = src/main.c src/map.c src/engine.c src/daw.c src/utils.c src/man_key.c src/conversion.c
 
-MLX = mlx/libmlx.a
+MLX = ./libmlx.dylib
 
 CC = gcc -g
 
@@ -31,7 +31,8 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@make -C ./mlx
 	@make -C ./libft
-	@$(CC) $(FLAGS) -o $(NAME) $(OBJ) -L libft -lft -lm $(MLX) -framework OpenGL -framework AppKit
+	@mv mlx/libmlx.dylib .
+	@$(CC) $(FLAGS) -o $(NAME) $(OBJ) $(MLX) -L libft -lft -lm -Lmlx -lmlx -framework OpenGL -framework AppKit
 	@echo "$(C_LGRN)➜ [$(NAME)] Program has been compiled successfully !$(C_END)"
 
 %.o: %.c

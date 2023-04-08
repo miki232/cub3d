@@ -1,6 +1,10 @@
 # cub3d
 
-Primo push del 31/03/2023
+push del 007/04/2023
 
-Inizializzatzioer mlx e parser della mappa, quasi fatto
-iniziato a creare il motore grafico
+Motore grafico funzionante, pasring mappa da rivedere
+
+motore grafico non supporta mappe piú grandi di 8*8, why? bho ****fixed mapS 64 blocchi
+
+
+
