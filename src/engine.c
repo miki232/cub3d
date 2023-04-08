@@ -162,7 +162,7 @@ void	ft_raycast(t_data *mlx)
 		}
 		mlx->map->ca = ft_fixang(mlx->map->pa - mlx->map->ra);
 		mlx->map->dish = mlx->map->dish * cos(degtorad(mlx->map->ca));
-		mlx->map->lineh = (mlx->map->mapx * mlx->map->mapy * 322) / mlx->map->dish;
+		mlx->map->lineh = (64 * 322) / mlx->map->dish;
 		mlx->map->ty_step = 32.0 / (float)mlx->map->lineh;
 		mlx->map->ty_off = 0;
 		if (mlx->map->lineh > 322)
