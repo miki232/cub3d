@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 17:16:54 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/06 16:35:09 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/09 18:26:40 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 void	clear(t_data *mlx)
 {
 	mlx_destroy_image(mlx->mlx_ptr, mlx->img);
-	mlx->img = mlx_new_image(mlx->mlx_ptr, 585, 322);
+	mlx->img = mlx_new_image(mlx->mlx_ptr, WIDTH, HEIGHT);
 	mlx->addr =	mlx_get_data_addr(mlx->img, &mlx->bits_per_pixel, &mlx->line_length, &mlx->endian);
 }
 

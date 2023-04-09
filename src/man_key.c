@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 14:38:24 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/07 15:15:57 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/09 15:13:01 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,14 @@ void    ft_key_hook(t_data *mlx)
 {
     if (mlx->key->a == 1)
     {
-        mlx->map->pa += 8 * 0.8;
+        mlx->map->pa += 7 * 0.8;
         mlx->map->pa = ft_fixang(mlx->map->pa);
         mlx->map->pdx = cos(degtorad(mlx->map->pa));
         mlx->map->pdy = -sin(degtorad(mlx->map->pa));
     }
     if (mlx->key->d == 1)
     {
-        mlx->map->pa -= 8 * 0.8;
+        mlx->map->pa -= 7 * 0.8;
         mlx->map->pa = ft_fixang(mlx->map->pa);
         mlx->map->pdx = cos(degtorad(mlx->map->pa));
         mlx->map->pdy = -sin(degtorad(mlx->map->pa));
@@ -43,16 +43,16 @@ void    ft_key_hook(t_data *mlx)
     if (mlx->key->w == 1)
     {
         if (mlx->map->mapw[ipy * mlx->map->mapx + ipx_add_xo] == 0)
-            mlx->map->px += mlx->map->pdx * 7;
-        if (mlx->map->mapw[ipy_add_yo * 8 + ipx] == 0)
-            mlx->map->py += mlx->map->pdy * 7;
+            mlx->map->px += mlx->map->pdx * 6;
+        if (mlx->map->mapw[ipy_add_yo * mlx->map->mapx + ipx] == 0)
+            mlx->map->py += mlx->map->pdy * 6;
     }
     if (mlx->key->s == 1)
     {
         if (mlx->map->mapw[ipy * mlx->map->mapx + ipx_sub_xo] == 0)
-            mlx->map->px -= mlx->map->pdx * 7;
+            mlx->map->px -= mlx->map->pdx * 6;
         if (mlx->map->mapw[ipy_sub_yo * mlx->map->mapx + ipx] == 0)
-            mlx->map->py -= mlx->map->pdy * 7;
+            mlx->map->py -= mlx->map->pdy * 6;
     }
 }
 

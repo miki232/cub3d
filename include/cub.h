@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:36:30 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/07 16:01:16 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/09 18:29:14 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <time.h>
 # include "../mlx/mlx.h"
 
-# define HEIGHT 585+1
-# define WIDTH 322+1
+# define HEIGHT 500
+# define WIDTH 900
 # define PI 3.1415926535
 # define P2 PI / 2
 # define P3 3*PI / 2
@@ -59,6 +59,7 @@ typedef struct	s_map
 	int		color;
 	int		temps;
 	int		lineh;
+	int		*depth;
 	float	vx;
 	float	vy;
 	float	rx;
