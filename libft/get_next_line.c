@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ohassyao <ohassyao@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 16:12:55 by ohassyao          #+#    #+#             */
-/*   Updated: 2022/12/22 13:36:44 by ohassyao         ###   ########.fr       */
+/*   Updated: 2023/04/10 17:18:52 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,6 @@ char	*ft_substr_gnl(char *s, unsigned int start, size_t len, int need_free)
 	if (need_free)
 		free(s);
 	return (str);
-}
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	count;
-
-	count = 0;
-	if (!str)
-		return (0);
-	while (str[count])
-		count++;
-	return (count);
 }
 
 int	ft_srch(const char *s, char c)

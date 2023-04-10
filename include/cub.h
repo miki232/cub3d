@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:36:30 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/09 18:29:14 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/10 18:07:18 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@
 
 typedef struct	s_map
 {
-	char	*map;
+	int		maprow; //qunate righe
+	int		l_mapex; // lunghezza riga piú lunga
+	char 	**tempmap;
+	char	**map;
 	char	*no_texture;
 	char	*so_texture;
 	char	*we_texture;

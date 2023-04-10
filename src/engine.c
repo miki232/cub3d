@@ -6,41 +6,41 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 15:18:20 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/09 19:02:14 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/10 18:13:39 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub.h"
 
 
-void	ft_get_player_pos(t_data *mlx)
-{
-	int	i;
-	int	x;
-	int	y;
+// void	ft_get_player_pos(t_data *mlx)
+// {
+// 	int	i;
+// 	int	x;
+// 	int	y;
 
-	i = 0;
-	x = 0;
-	y = 0;
-	while (mlx->map->map[i])
-	{
-		if (mlx->map->map[i] == '\n')
-		{
-			x = 0;
-			y+= 64;
-		}
-		else if (mlx->map->map[i] == ' ' || mlx->map->map[i] == '1' || mlx->map->map[i] == '0')
-		{
-			x+= 64;
-		}
-		if (mlx->map->map[i] == 'N')
-		{
-			mlx->map->px = x + 32;
-			mlx->map->py = y + 32;
-		}
-		i++;
-	}
-}
+// 	i = 0;
+// 	x = 0;
+// 	y = 0;
+// 	while (mlx->map->map[i])
+// 	{
+// 		if (mlx->map->map[i] == '\n')
+// 		{
+// 			x = 0;
+// 			y+= 64;
+// 		}
+// 		else if (mlx->map->map[i] == ' ' || mlx->map->map[i] == '1' || mlx->map->map[i] == '0')
+// 		{
+// 			x+= 64;
+// 		}
+// 		if (mlx->map->map[i] == 'N')
+// 		{
+// 			mlx->map->px = x + 32;
+// 			mlx->map->py = y + 32;
+// 		}
+// 		i++;
+// 	}
+// }
 
 void	ft_vert_line(t_data *mlx)
 {
@@ -217,12 +217,12 @@ void	ft_create_level(t_data *mlx)
 {
 	mlx->map->color = 0x00FFFF;
 	mlx->map->depth = (int *)malloc(sizeof(float) * 120);
-	ft_map_convert(mlx);
-	ft_get_player_pos(mlx);
-	mlx->map->pa = 0;
-	mlx->map->pdx = cos(degtorad(mlx->map->pa));
-	mlx->map->pdy = sin(degtorad(mlx->map->pa));
-	mlx_loop_hook(mlx->mlx_ptr, ft_draw, mlx);
+	// ft_map_convert(mlx);
+	// ft_get_player_pos(mlx);
+	// mlx->map->pa = 0;
+	// mlx->map->pdx = cos(degtorad(mlx->map->pa));
+	// mlx->map->pdy = sin(degtorad(mlx->map->pa));
+	// mlx_loop_hook(mlx->mlx_ptr, ft_draw, mlx);
 
 	printf("player found at x: %d y: %d\n", mlx->map->mapx, mlx->map->mapy);
 }

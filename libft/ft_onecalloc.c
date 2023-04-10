@@ -1,25 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_onecalloc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/16 12:38:06 by ohassyao          #+#    #+#             */
-/*   Updated: 2023/04/10 17:18:50 by mtoia            ###   ########.fr       */
+/*   Created: 2023/04/10 18:12:15 by mtoia             #+#    #+#             */
+/*   Updated: 2023/04/10 18:17:56 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *str)
+void	ft_bone(void *s, size_t n)
 {
-	size_t	count;
+	unsigned char	*ptr;
 
-	count = 0;
-	if (!str)
-		return (0);
-	while (str[count])
-		count++;
-	return (count);
+	ptr = (unsigned char *) s;
+	while (n--)
+	{
+		*(ptr++) = '1';
+	}
+}
+
+void	*ft_onecalloc(size_t count, size_t size)
+{
+	void	*ptr;
+
+	ptr = malloc(count * size);
+	if (!ptr)
+		return (ptr);
+	ft_bone(ptr, size * count);
+	return (ptr);
 }
