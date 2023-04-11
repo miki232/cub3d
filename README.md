@@ -1,10 +1,12 @@
 # cub3d
 
-push del 007/04/2023
-
-Motore grafico funzionante, pasring mappa da rivedere
-
-motore grafico non supporta mappe piú grandi di 8*8, why? bho ****fixed mapS 64 blocchi
+push del 11/04/2023
 
 
+DA rivedere come vengono stampate le 2 mappe 01 e 02.cub, su windows,
 
+a quanto pare viene aggiunta al posto del '\n' il '\r', che equivale a 13 sulla ascitable
+
+ma comunque pare viene renderizzata bene.
+
+Da cambiare la cartella di mlx che è per WLS2 e cambiare le flag al makefile principale
