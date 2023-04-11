@@ -9,4 +9,4 @@ a quanto pare viene aggiunta al posto del '\n' il '\r', che equivale a 13 sulla 
 
 ma comunque pare viene renderizzata bene.
 
-Da cambiare la cartella di mlx che è per WLS2 e cambiare le flag al makefile principale
+cambiare le flag al makefile principale
