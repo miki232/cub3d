@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: ohassyao <ohassyao@student.42.fr>          +#+  +:+       +#+         #
+#    By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/16 15:22:00 by ohassyao          #+#    #+#              #
-#    Updated: 2023/03/16 15:29:52 by ohassyao         ###   ########.fr        #
+#    Updated: 2023/04/10 18:13:05 by mtoia            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,7 @@ C_LGRN = \033[92m
 C_LMGN = \033[95m
 C_END = \033[0m
 
-FILES = ft_atoi.c ft_bzero.c ft_calloc.c \
+FILES = ft_atoi.c ft_bzero.c ft_calloc.c ft_onecalloc.c \
 		ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		ft_isdigit.c ft_isprint.c ft_memchr.c \
 		ft_memcmp.c ft_memcpy.c ft_memmove.c \

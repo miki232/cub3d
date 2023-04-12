@@ -14,7 +14,7 @@
 
 void    ft_key_hook(t_data *mlx)
 {
-    if (mlx->map->r == 120) /// da cambiare con mlx->map->a 
+    if (mlx->key->a == 1)
     {
         mlx->map->pa += 7 * 0.8;
         mlx->map->pa = ft_fixang(mlx->map->pa);

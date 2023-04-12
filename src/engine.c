@@ -13,38 +13,34 @@
 #include "../include/cub.h"
 
 
-void	ft_get_player_pos(t_data *mlx)
-{
-	int	i;
-	int	x;
-	int k;
-	int	y;
+// void	ft_get_player_pos(t_data *mlx)
+// {
+// 	int	i;
+// 	int	x;
+// 	int	y;
 
-	i = 0;
-	x = 0;
-	y = 0;
-	k = 0;
-	while (mlx->map->map[i] != NULL)
-	{
-		k = 0;
-		while (mlx->map->map[i][k] != '\0')
-		{
-			if (mlx->map->map[i][k] == '7' || mlx->map->map[i][k] == '1' || mlx->map->map[i][k] == '0')
-			{
-				x+= 64;
-			}
-			if (mlx->map->map[i][k] == 'N')
-			{
-				mlx->map->px = x + 32;
-				mlx->map->py = y + 32;
-			}
-			k++;
-		}
-		x = 0;
-		y+= 64;
-		i++;
-	}
-}
+// 	i = 0;
+// 	x = 0;
+// 	y = 0;
+// 	while (mlx->map->map[i])
+// 	{
+// 		if (mlx->map->map[i] == '\n')
+// 		{
+// 			x = 0;
+// 			y+= 64;
+// 		}
+// 		else if (mlx->map->map[i] == ' ' || mlx->map->map[i] == '1' || mlx->map->map[i] == '0')
+// 		{
+// 			x+= 64;
+// 		}
+// 		if (mlx->map->map[i] == 'N')
+// 		{
+// 			mlx->map->px = x + 32;
+// 			mlx->map->py = y + 32;
+// 		}
+// 		i++;
+// 	}
+// }
 
 void	ft_vert_line(t_data *mlx)
 {
@@ -202,13 +198,12 @@ void	ft_raycast(t_data *mlx)
 		}
 		mlx->map->ra = ft_fixang(mlx->map->ra - 0.5);
 		mlx->map->r++;
-	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
 	}
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
 }
 
 int ft_draw(t_data *mlx)
 {
-	(void)mlx;
 	clear(mlx);
 	ft_key_hook(mlx);
 	//ft_map_draw(mlx);
@@ -222,12 +217,12 @@ void	ft_create_level(t_data *mlx)
 {
 	mlx->map->color = 0x00FFFF;
 	mlx->map->depth = (int *)malloc(sizeof(float) * 120);
-	ft_map_convert(mlx);
-	ft_get_player_pos(mlx);
-	mlx->map->pa = 90;
-	mlx->map->pdx = cos(degtorad(mlx->map->pa));
-	mlx->map->pdy = sin(degtorad(mlx->map->pa));
-	printf("player found at x: %d y: %d\n", mlx->map->px, mlx->map->py);
-	mlx_loop_hook(mlx->mlx_ptr, ft_draw, mlx);
+	// ft_map_convert(mlx);
+	// ft_get_player_pos(mlx);
+	// mlx->map->pa = 0;
+	// mlx->map->pdx = cos(degtorad(mlx->map->pa));
+	// mlx->map->pdy = sin(degtorad(mlx->map->pa));
+	// mlx_loop_hook(mlx->mlx_ptr, ft_draw, mlx);
 
+	printf("player found at x: %d y: %d\n", mlx->map->mapx, mlx->map->mapy);
 }

@@ -16,9 +16,9 @@ C_LGRN = \033[92m
 C_LMGN = \033[95m
 C_END = \033[0m
 
-SRC = src/main.c src/map.c src/checker_map.c src/conversion.c src/daw.c src/engine.c src/man_key.c src/utils.c
+SRC = src/main.c src/map.c src/engine.c src/daw.c src/utils.c src/man_key.c src/conversion.c
 
-MLX = mlx/libmlx.a
+MLX = ./libmlx.dylib
 
 CC = gcc -g
 
@@ -31,8 +31,8 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	@make -C ./mlx
 	@make -C ./libft
-	# @mv mlx/libmlx.dylib .
-	@$(CC) $(FLAGS) -o $(NAME) $(OBJ) $(MLX)  libft/libft.a -L -lmlx -Iinclude -lm -lXext -lX11
+	@mv mlx/libmlx.dylib .
+	@$(CC) $(FLAGS) -o $(NAME) $(OBJ) $(MLX) -L libft -lft -lm -Lmlx -lmlx -framework OpenGL -framework AppKit
 	@echo "$(C_LGRN)➜ [$(NAME)] Program has been compiled successfully !$(C_END)"
 
 %.o: %.c

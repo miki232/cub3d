@@ -27,48 +27,6 @@ char	*ft_skip(char *line)
 	return (line + i);
 }
 
-void update_probabilities(char *line, t_data *m) {
-    int in_number = 0;
-
-    for (int i = 0; i < (int)ft_strlen(line); i++) {
-        char c = line[i];
-        if (c == ' ') {
-            m->map->num_spots++;
-            in_number = 0;
-        } else {
-            if (!in_number) {
-                m->map->num_numbers++;
-                in_number = 1;
-            }
-        }
-    }
-}
-
-double calculate_probabilities(t_data *m) {
-    double prob_spaces = (double) m->map->num_spots / (double) m->map->num_numbers;
-    double prob_numbers = 1 - prob_spaces;
-
-    return prob_numbers > prob_spaces ? prob_numbers : prob_spaces;
-}
-
-char *ft_rl_space(char *line)
-{
-	int i = 0;
-	int j = 0;
-	char *temp;
-	temp = (char *)calloc(ft_strlen(line), sizeof(char));
-	while (line[i] != '\0')
-	{
-		if (line[i] != ' ')
-		{
-			temp[j] = line[i];
-			j++;
-		}
-		i++;
-	}
-	temp[j + 1]	= '\0';
-	return (temp);
-}
 
 void	map_load(t_data *mlx, char *line)
 {
@@ -77,7 +35,6 @@ void	map_load(t_data *mlx, char *line)
 	if ((int)ft_strlen(line) > mlx->map->l_mapex)
 		mlx->map->l_mapex = ft_strlen(line);
 	mlx->map->tempmap = ft_matrixextend(mlx->map->tempmap, line);
-	update_probabilities(line, mlx);
 }
 
 int	ft_line(char *line, t_data *mlx)
@@ -147,32 +104,27 @@ void	ft_map_fill(t_data *mlx)
 	int i;
 
 	i = 0;
-	if (calculate_probabilities(mlx) > 1)
+	mlx->map->map = (char **)ft_calloc(mlx->map->maprow + 1, sizeof(char *));
+	while (i < mlx->map->maprow)
 	{
-		mlx->map->map = (char **)ft_calloc(mlx->map->maprow + 1, sizeof(char *));
-		while (i < mlx->map->maprow)
+		mlx->map->map[i] = (char *)ft_calloc(mlx->map->l_mapex, sizeof(char));
+		int x = 0;
+		while (x < mlx->map->l_mapex - 1)
 		{
-			mlx->map->map[i] = (char *)ft_calloc(mlx->map->l_mapex, sizeof(char));
-			int x = 0;
-			while (x < mlx->map->l_mapex)
-			{
-				mlx->map->map[i][x] = '7';
-				x++;
-			}
-			mlx->map->map[i][x] = '\0';
-			x = 0;
-			while (mlx->map->tempmap[i][x] != '\n')
-			{
-				if (mlx->map->tempmap[i][x] != ' ')
-					mlx->map->map[i][x] = mlx->map->tempmap[i][x];
-				x++;
-			}
-			i++;
+			mlx->map->map[i][x] = '7';
+			x++;
 		}
+		mlx->map->map[i][x] = '\0';
+		x = 0;
+		while (mlx->map->tempmap[i][x] != '\n')
+		{
+			if (mlx->map->tempmap[i][x] != ' ')
+				mlx->map->map[i][x] = mlx->map->tempmap[i][x];
+			x++;
+		}
+		i++;
 	}
-	else
-		printf("SUCAPERORA!\n");
-}	
+}
 
 // int ft_map_check(t_data *mlx)
 // {
@@ -224,20 +176,13 @@ void	ft_map_parser(t_data *mlx, char *file)
 		printf("%s", mlx->map->tempmap[ret]);
 		ret++;
 	}
-	printf("\n\n");
+	printf("\n");
 	ret = 0;
-	printf("%d %d\n", mlx->map->l_mapex, mlx->map->maprow);
 	while (mlx->map->map[ret] != NULL)
 	{
-		for (int i = 0; i < mlx->map->l_mapex; i++)
-			printf("%c", mlx->map->map[ret][i]);
-		printf("\n");
+		printf("%s\n", mlx->map->map[ret]);
 		ret++;
 	}
-	if (is_zero_enclosed_by_one(mlx->map->map, mlx->map->maprow, mlx->map->l_mapex))
-		printf("OK\n");
-	else
-		printf("NOOOO\n");
 	printf("\nl_mapex = %d row = %d\n", mlx->map->l_mapex, mlx->map->maprow);
 	close(fd);
 }
