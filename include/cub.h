@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:36:30 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/13 10:43:20 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/13 14:48:49 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,9 +156,13 @@ void    ft_key_hook(t_data *mlx);
 void    ft_square(t_data *mlx,int x, int y, int colo);
 void    ft_player(t_data *mlx, int x, int y, int colo);
 void	verline(t_data *mlx, int x, int y1, int y2, int color);
-float   dist(float ax, float ay, float bx, float by, float ang);
+float	dist(float ax, float ay, float bx, float by);
 float	ft_fixang(float a);
 float	degtorad(float a);
+void	ft_free(t_data *map);
+void	ft_get_player_pos(t_data *mlx);
+void	ft_error(char *str);
+void	ft_check_map(t_data *mlx);
 
 //key handler
 int	ft_key_u(int key, t_data *mlx);

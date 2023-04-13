@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 17:14:41 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/12 15:27:25 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/13 14:45:52 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,18 @@ double calculate_probabilities(t_data *m) {
     return prob_numbers > prob_spaces ? prob_numbers : prob_spaces;
 }
 
-char *ft_rl_space(char *line)
+char *ft_rl_space(t_data *mlx, int k)
 {
 	int i = 0;
 	int j = 0;
 	char *temp;
-	temp = (char *)calloc(ft_strlen(line), sizeof(char));
-	while (line[i] != '\0')
+	
+	temp = (char *)calloc(ft_strlen(mlx->map->tempmap[k]), sizeof(char));
+	while (mlx->map->tempmap[k][i] != '\0')
 	{
-		if (line[i] != ' ' && line[i] != '\n')
+		if (mlx->map->tempmap[k][i] != ' ' && mlx->map->tempmap[k][i] != '\n')
 		{
-			temp[j] = line[i];
+			temp[j] = mlx->map->tempmap[k][i];
 			j++;
 		}
 		i++;
@@ -74,8 +75,8 @@ void	map_load(t_data *mlx, char *line)
 {
 	if (line[ft_strlen(line) - 1] == '\n')
 		mlx->map->maprow++;
-	if ((int)ft_strlen(line) > mlx->map->l_mapex)
-		mlx->map->l_mapex = ft_strlen(line);
+	if ((int)(ft_strlen(line) - 1) > mlx->map->l_mapex)
+		mlx->map->l_mapex = (ft_strlen(line) - 1);
 	mlx->map->tempmap = ft_matrixextend(mlx->map->tempmap, line);
 	update_probabilities(line, mlx);
 }
@@ -94,8 +95,8 @@ int	ft_line(char *line, t_data *mlx)
 		mlx->map->we_texture = ft_strdup(ft_skip(line));
 	else if (line[i] == 'E' && line[i + 1] == 'A')
 		mlx->map->ea_texture = ft_strdup(ft_skip(line));
-	else if (line[i] == '1' || line[i] == ' ')
-		map_load(mlx, line); 
+	else if ((line[i] == '1' || line[i] == ' '))
+		map_load(mlx, line);
 	return (1);
 }
 
@@ -150,6 +151,25 @@ void	ft_map_draw(t_data *mlx)
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
 }
 
+void	ft_void_check(t_data *mlx) /// Meglio riempiere i vuoti con 7 e poi ricontrollare 
+{
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	while (mlx->map->map[i] != NULL)
+	{
+		if ((int)ft_strlen(mlx->map->map[i]) != mlx->map->l_mapex)
+		{
+			printf("MAP ERROR\n");
+			exit(0);
+		}
+		j = 0;
+		i++;
+	}
+}
+
 void	ft_map_fill(t_data *mlx)
 {
 	int i;
@@ -185,35 +205,17 @@ void	ft_map_fill(t_data *mlx)
 		mlx->map->l_mapex = 0;
 		while (i < mlx->map->maprow)
 		{
-			mlx->map->map = ft_matrixextend(mlx->map->map, ft_rl_space(mlx->map->tempmap[i]));
+			mlx->map->map = ft_matrixextend(mlx->map->map, ft_rl_space(mlx, i));
 			update_probabilities(mlx->map->map[i], mlx);
 			if ((int)ft_strlen(mlx->map->map[i]) > mlx->map->l_mapex)
 				mlx->map->l_mapex = ft_strlen(mlx->map->map[i]);
 			printf("%s\n", mlx->map->map[i]);
 			i++;
 		}
-		// ft_map_fill(mlx);
+		// ft_void_check(mlx);
 	}
 }	
 
-// int ft_map_check(t_data *mlx)
-// {
-// 	int	i;
-// 	int	j;
-	
-// 	j = 0;
-// 	i = 0;
-// 	while (mlx->map->tempmap[i] != NULL)
-// 	{
-// 		j = 0;
-// 		while (mlx->map->tempmap[i][j] == ' ')
-// 		{
-// 			/* code */
-// 		}
-		
-// 	}
-	
-// }
 
 void	ft_map_parser(t_data *mlx, char *file)
 {
@@ -233,14 +235,11 @@ void	ft_map_parser(t_data *mlx, char *file)
 		free(line);
 	}
 	
-    //ft_freeline(line);
-	// printf("%s\n", map->no_texture);
-	// printf("%s\n", map->so_texture);
-	// printf("%s\n", map->we_texture);
-	// printf("%s\n", map->ea_texture);
-	// ft_map_check(mlx);
 	ft_map_fill(mlx);
+	///debug line
 	ret = 0;
+	printf("TEMPMAP\n");
+	ft_check_map(mlx);
 	while (mlx->map->tempmap[ret] != NULL)
 	{
 		printf("%s", mlx->map->tempmap[ret]);
@@ -256,10 +255,11 @@ void	ft_map_parser(t_data *mlx, char *file)
 		printf("\n");
 		ret++;
 	}
+	//end debug
 	if (is_zero_enclosed_by_one(mlx->map->map, mlx->map->maprow, mlx->map->l_mapex))
 		printf("OK\n");
 	else
-		printf("NOOOO\n");
+		ft_error("MAP ERROR\n");
 	printf("\nl_mapex = %d row = %d\n", mlx->map->l_mapex, mlx->map->maprow);
 	close(fd);
 }
