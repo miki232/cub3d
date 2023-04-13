@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:36:30 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/10 18:07:18 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/13 10:43:20 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,8 @@
 
 typedef struct	s_map
 {
-	int		maprow; //qunate righe
-	int		l_mapex; // lunghezza riga piú lunga
-	char 	**tempmap;
 	char	**map;
+	char	**tempmap;
 	char	*no_texture;
 	char	*so_texture;
 	char	*we_texture;
@@ -46,6 +44,10 @@ typedef struct	s_map
 	float	pdy; //delta y
 	float	pa;	//player angle
 	int		*mapw;
+	int		maprow;
+	int		l_mapex;
+	int		num_spots;
+	int		num_numbers;
 	int		mapx;
 	int		mapy;
 	int		maps;
@@ -143,6 +145,7 @@ void	ft_map_parser(t_data *mlx, char *file);
 void	ft_map_convert(t_data *mlx);
 int	ft_map_len(t_map *map);
 void	ft_map_draw(t_data *mlx);
+int is_zero_enclosed_by_one(char **matrix, int rows, int cols);
 
 /// engine & creation
 void	ft_create_level(t_data *mlx);

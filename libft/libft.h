@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 12:54:09 by ohassyao          #+#    #+#             */
-/*   Updated: 2023/04/10 18:12:51 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/03/20 16:36:10 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ typedef struct s_list
 	struct s_list	*next;
 }	t_list;
 
-void		*ft_onecalloc(size_t count, size_t size);
 int			ft_isalpha(int c);
 int			ft_isdigit(int c);
 int			ft_isalnum(int c);

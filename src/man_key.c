@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/07 14:38:24 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/09 15:13:01 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/12 16:57:37 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,14 @@ void    ft_key_hook(t_data *mlx)
     if (mlx->key->w == 1)
     {
         if (mlx->map->mapw[ipy * mlx->map->mapx + ipx_add_xo] == 0)
+        {
             mlx->map->px += mlx->map->pdx * 6;
+        }
         if (mlx->map->mapw[ipy_add_yo * mlx->map->mapx + ipx] == 0)
+        {
             mlx->map->py += mlx->map->pdy * 6;
+        }
+        mlx->map->map[mlx->map->py / 64][mlx->map->px / 64] = 2;
     }
     if (mlx->key->s == 1)
     {

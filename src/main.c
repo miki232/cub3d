@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:39:17 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/10 17:53:39 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/12 15:29:24 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ int	main(int argc, char **argv)
 	mlx.addr = mlx_get_data_addr(mlx.img, &mlx.bits_per_pixel, &mlx.line_length, &mlx.endian);
 
 	ft_map_parser(&mlx, argv[1]);
-	// ft_create_level(&mlx);
+	ft_create_level(&mlx);
 	// verline(&mlx, 5, 1, 50, 0xFFFFFFF);
 	// ft_free(&map);
 	
-	// mlx_loop(mlx.mlx_ptr);
+	mlx_loop(mlx.mlx_ptr);
 }
