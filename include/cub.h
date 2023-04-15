@@ -163,6 +163,7 @@ void	ft_free(t_data *map);
 void	ft_get_player_pos(t_data *mlx);
 void	ft_error(char *str);
 void	ft_check_map(t_data *mlx);
+int validate_map(char **matrix, int rows, int cols);
 
 //key handler
 int	ft_key_u(int key, t_data *mlx);

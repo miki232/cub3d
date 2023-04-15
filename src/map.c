@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 17:14:41 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/13 14:45:52 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/15 12:41:33 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,10 +154,8 @@ void	ft_map_draw(t_data *mlx)
 void	ft_void_check(t_data *mlx) /// Meglio riempiere i vuoti con 7 e poi ricontrollare 
 {
 	int i;
-	int j;
 
 	i = 0;
-	j = 0;
 	while (mlx->map->map[i] != NULL)
 	{
 		if ((int)ft_strlen(mlx->map->map[i]) != mlx->map->l_mapex)
@@ -165,9 +163,27 @@ void	ft_void_check(t_data *mlx) /// Meglio riempiere i vuoti con 7 e poi ricontr
 			printf("MAP ERROR\n");
 			exit(0);
 		}
-		j = 0;
 		i++;
 	}
+}
+
+int	ft_cap(t_data *mlx)
+{
+	int i;
+
+	i = 0;
+	while (i < mlx->map->maprow)
+	{
+		printf("MAP:%s %d\n",mlx->map->tempmap[i], (int)ft_strlen(mlx->map->tempmap[i]) - 1);
+		printf("l_mapex: %d\n", mlx->map->l_mapex);
+		if ((int)ft_strlen(mlx->map->tempmap[i]) - 1 != mlx->map->l_mapex)
+		{
+			printf("MAP ERRORsda\n");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }
 
 void	ft_map_fill(t_data *mlx)
@@ -176,7 +192,7 @@ void	ft_map_fill(t_data *mlx)
 
 	i = 0;
 	printf("NUMBERS: %f\n", calculate_probabilities(mlx));
-	if (calculate_probabilities(mlx) > 1)
+	if (calculate_probabilities(mlx) > 1 || ft_cap(mlx))
 	{
 		mlx->map->map = (char **)ft_calloc(mlx->map->maprow + 1, sizeof(char *));
 		while (i < mlx->map->maprow)
@@ -212,6 +228,8 @@ void	ft_map_fill(t_data *mlx)
 			printf("%s\n", mlx->map->map[i]);
 			i++;
 		}
+		if (!validate_map(mlx->map->map, mlx->map->maprow, mlx->map->l_mapex))
+			ft_error("MAP ERROR\n");
 		// ft_void_check(mlx);
 	}
 }	

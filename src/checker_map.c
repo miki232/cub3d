@@ -89,6 +89,63 @@ int	is_zero_enclosed_by_one(char **matrix, int rows, int cols)
 	return (1);
 }
 
+int validate_map(char **matrix, int rows, int cols)
+{
+    bool player_position_found = false;
+    char valid_chars[] = "7 01NSEW";
+
+    // Verifica che la mappa sia circondata da muri (1)
+    for (int i = 0; i < rows; i++) {
+        if (matrix[i][0] != '1' || matrix[i][cols - 1] != '1') {
+            return 0;
+        }
+    }
+    for (int j = 0; j < cols; j++) {
+        if (matrix[0][j] != '1' || matrix[rows - 1][j] != '1') {
+            return 0;
+        }
+    }
+
+    // Controlla se i caratteri sono validi e se c'è una posizione del giocatore
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            char current_char = matrix[i][j];
+            bool is_valid_char = false;
+
+            for (int k = 0; valid_chars[k] != '\0'; k++) {
+                if (current_char == valid_chars[k]) {
+                    is_valid_char = true;
+                    break;
+                }
+            }
+
+            if (!is_valid_char) {
+                return 0;
+            }
+
+            if (current_char == 'N' || current_char == 'S' || current_char == 'E' || current_char == 'W') {
+                if (player_position_found) {
+                    // Troppi giocatori sulla mappa
+                    return 0;
+                }
+                player_position_found = true;
+            }
+        }
+    }
+
+    if (!player_position_found) {
+        // Nessuna posizione del giocatore trovata
+        return 0;
+    }
+
+    // Verifica se gli zeri sono racchiusi da "1"
+    if (is_zero_enclosed_by_one(matrix, rows, cols) == 0) {
+        return 0;
+    }
+
+    return 1;
+}
+
 void	ft_check_map(t_data *mlx)
 {
 	int i;
