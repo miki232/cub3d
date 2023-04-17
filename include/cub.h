@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:36:30 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/13 14:48:49 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/17 14:48:32 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <time.h>
 # include "../mlx/mlx.h"
 
-# define HEIGHT 500
-# define WIDTH 900
+# define HEIGHT 322
+# define WIDTH 585
 # define PI 3.1415926535
 # define P2 PI / 2
 # define P3 3*PI / 2
@@ -43,6 +43,7 @@ typedef struct	s_map
 	float	pdx; //delta x
 	float	pdy; //delta y
 	float	pa;	//player angle
+	float	ra_step;
 	int		*mapw;
 	int		maprow;
 	int		l_mapex;

@@ -6,7 +6,7 @@
 #    By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 16:40:12 by mtoia             #+#    #+#              #
-#    Updated: 2023/04/13 12:07:08 by mtoia            ###   ########.fr        #
+#    Updated: 2023/04/17 17:57:25 by mtoia            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ SRC = src/main.c src/map.c src/checker_map.c src/conversion.c src/draw.c src/eng
 
 MLX = ./libmlx.dylib
 
-CC = gcc -g
+CC = gcc -O3
 
 FLAGS = -Werror -Wextra -Wall -g
 

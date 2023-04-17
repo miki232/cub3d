@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 17:14:41 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/15 12:41:33 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/17 14:30:55 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,12 @@ char *ft_rl_space(t_data *mlx, int k)
 		{
 			temp[j] = mlx->map->tempmap[k][i];
 			j++;
+		}
+		if (mlx->map->tempmap[k][i] == ' ' && mlx->map->tempmap[k][i + 1] == ' ')
+		{
+			temp[j] = '7';
+			j++;
+			i++;
 		}
 		i++;
 	}
@@ -132,16 +138,8 @@ void	ft_map_draw(t_data *mlx)
 			else if (mlx->map->map[i][k] == '0')
 				ft_square(mlx, x, y, 0xFFFAAF);
 			else if (mlx->map->map[i][k] == 'N')
-			{
 				ft_square(mlx, x, y, 0x00000FF0);
-
-			}
-			if (mlx->map->map[i][k] == '\n')
-			{
-				printf("SUCA\n");
-			}
-			else
-				x += 5;
+			x += 5;
 			k++;
 		}
 		x = 0;
@@ -151,48 +149,13 @@ void	ft_map_draw(t_data *mlx)
 	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
 }
 
-void	ft_void_check(t_data *mlx) /// Meglio riempiere i vuoti con 7 e poi ricontrollare 
-{
-	int i;
-
-	i = 0;
-	while (mlx->map->map[i] != NULL)
-	{
-		if ((int)ft_strlen(mlx->map->map[i]) != mlx->map->l_mapex)
-		{
-			printf("MAP ERROR\n");
-			exit(0);
-		}
-		i++;
-	}
-}
-
-int	ft_cap(t_data *mlx)
-{
-	int i;
-
-	i = 0;
-	while (i < mlx->map->maprow)
-	{
-		printf("MAP:%s %d\n",mlx->map->tempmap[i], (int)ft_strlen(mlx->map->tempmap[i]) - 1);
-		printf("l_mapex: %d\n", mlx->map->l_mapex);
-		if ((int)ft_strlen(mlx->map->tempmap[i]) - 1 != mlx->map->l_mapex)
-		{
-			printf("MAP ERRORsda\n");
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-
 void	ft_map_fill(t_data *mlx)
 {
 	int i;
 
 	i = 0;
 	printf("NUMBERS: %f\n", calculate_probabilities(mlx));
-	if (calculate_probabilities(mlx) > 1 || ft_cap(mlx))
+	if (calculate_probabilities(mlx) > 1)
 	{
 		mlx->map->map = (char **)ft_calloc(mlx->map->maprow + 1, sizeof(char *));
 		while (i < mlx->map->maprow)
@@ -230,7 +193,6 @@ void	ft_map_fill(t_data *mlx)
 		}
 		if (!validate_map(mlx->map->map, mlx->map->maprow, mlx->map->l_mapex))
 			ft_error("MAP ERROR\n");
-		// ft_void_check(mlx);
 	}
 }	
 

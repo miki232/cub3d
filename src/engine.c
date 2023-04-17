@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 15:18:20 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/13 15:20:05 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/17 18:00:31 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 void	ft_vert_line(t_data *mlx)
 {
 	mlx->map->dof = 0;
-	mlx->map->disv = 1000000000;
+	mlx->map->disv = 1000000;
 	mlx->map->tan = tan(degtorad(mlx->map->ra));
 	if (cos(degtorad(mlx->map->ra)) > 0.001)
 	{
@@ -61,7 +61,7 @@ void	ft_vert_line(t_data *mlx)
 void	ft_hor_line(t_data *mlx)
 {
 	mlx->map->dof = 0;
-	mlx->map->dish = 1000000000;
+	mlx->map->dish = 1000000;
 	mlx->map->tan = 1.0 / mlx->map->tan;
 	if (sin(degtorad(mlx->map->ra)) > 0.001)
 	{
@@ -105,7 +105,6 @@ void	ft_hor_line(t_data *mlx)
 
 void	ft_raycast(t_data *mlx)
 {
-	mlx->map->r = 8;
 	mlx->map->ra = ft_fixang(mlx->map->pa + 30);
 	mlx->map->r = 0;
 	while (mlx->map->r < 120)
@@ -127,20 +126,20 @@ void	ft_raycast(t_data *mlx)
 			mlx->map->rx = mlx->map->vx;
 			mlx->map->ry = mlx->map->vy;
 			mlx->map->dish = mlx->map->disv;
-			mlx->map->color  = 0xFF0000;
+			// mlx->map->color  = 0xFF0000;
 		}
 		mlx->map->ca = ft_fixang(mlx->map->pa - mlx->map->ra);
 		mlx->map->dish = mlx->map->dish * cos(degtorad(mlx->map->ca));
-		mlx->map->lineh = (64 * 470) / mlx->map->dish;
+		mlx->map->lineh = (64 * 322) / mlx->map->dish;
 		mlx->map->ty_step = 32.0 / (float)mlx->map->lineh;
 		mlx->map->ty_off = 0;
-		if (mlx->map->lineh > 470)
+		if (mlx->map->lineh > 322)
 		{
-			mlx->map->ty_off = (mlx->map->lineh - 470) / 2.0;
-			mlx->map->lineh = 470;
+			mlx->map->ty_off = (mlx->map->lineh - 322) / 2.0;
+			mlx->map->lineh = 322;
 		}
 		mlx->map->depth[mlx->map->r] = mlx->map->dish;
-		mlx->map->lineo = 250 - (mlx->map->lineh >> 1);
+		mlx->map->lineo = 162 - (mlx->map->lineh >> 1);
 		mlx->map->ty = mlx->map->ty_off * mlx->map->ty_step;
 		if (mlx->map->shade == 1)
 		{
@@ -162,9 +161,9 @@ void	ft_raycast(t_data *mlx)
 			int red =All_Textures[pixel+0]*mlx->map->shade;
 			int green =All_Textures[pixel+1]*mlx->map->shade;
 			int blue =All_Textures[pixel+2]*mlx->map->shade;
-			int tempx = mlx->map->r * 8;
+			int tempx = mlx->map->r * 5;
 			mlx->map->color = (red << 16 | green << 8 | blue);
-			while (tempx < ((mlx->map->r * 8) + 8))
+			while (tempx < ((mlx->map->r * 5) + 5))
 			{
 				my_mlx_pixel_put(mlx, tempx, y + mlx->map->lineo, mlx->map->color);
 				tempx++;
@@ -182,8 +181,8 @@ int ft_draw(t_data *mlx)
 {
 	(void)mlx;
 	clear(mlx);
-	ft_key_hook(mlx);
 	ft_raycast(mlx);
+	ft_key_hook(mlx);
 	ft_map_draw(mlx);
 	mlx_hook(mlx->win_ptr, 2, (1L << 0), ft_key_d, mlx);
     mlx_hook(mlx->win_ptr, 3, 1L << 1, ft_key_u, mlx);
@@ -196,9 +195,9 @@ void	ft_create_level(t_data *mlx)
 	mlx->map->depth = (int *)malloc(sizeof(float) * 1200);
 	ft_map_convert(mlx);
 	ft_get_player_pos(mlx);
-	mlx->map->pa = 0;
+	mlx->map->pa = 90;
 	mlx->map->pdx = cos(degtorad(mlx->map->pa));
-	mlx->map->pdy = sin(degtorad(mlx->map->pa));
+	mlx->map->pdy = -sin(degtorad(mlx->map->pa));
 	printf("player found at x: %d y: %d\n", mlx->map->px, mlx->map->py);
 	mlx_loop_hook(mlx->mlx_ptr, ft_draw, mlx);
 
