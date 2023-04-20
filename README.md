@@ -1,7 +1,8 @@
 # cub3d
 
-push del 09/04/2023
+Push del 20/04
 
-Motore grafico funzionante, pasring mappa da rivedere
+Fix diagonal shifting
 
-fix rendering e ingrandimento finestra di gioco, 
+Add texture, from png to pixel
+ENRIK STYLES

@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:36:30 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/10 18:07:18 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/20 18:10:26 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,28 +24,43 @@
 # include "../mlx/mlx.h"
 
 # define HEIGHT 500
-# define WIDTH 900
+# define WIDTH 800
 # define PI 3.1415926535
 # define P2 PI / 2
 # define P3 3*PI / 2
 # define DR 0.0174533
+# define DOOR 4
+
+
+typedef struct s_data t_data;
+
+typedef struct s_textures {
+	t_data	*ea;
+	t_data	*no;
+	t_data	*so;
+	t_data	*we;
+	t_data	*door[10];
+}	t_textures;
 
 typedef struct	s_map
 {
-	int		maprow; //qunate righe
-	int		l_mapex; // lunghezza riga piú lunga
-	char 	**tempmap;
 	char	**map;
+	char	**tempmap;
 	char	*no_texture;
 	char	*so_texture;
 	char	*we_texture;
 	char	*ea_texture;
-	int		px; //player x
-	int		py; //player y
+	float		px; //player x
+	float		py; //player y
 	float	pdx; //delta x
 	float	pdy; //delta y
 	float	pa;	//player angle
+	float	ra_step;
 	int		*mapw;
+	int		maprow;
+	int		l_mapex;
+	int		num_spots;
+	int		num_numbers;
 	int		mapx;
 	int		mapy;
 	int		maps;
@@ -83,6 +98,7 @@ typedef struct	s_map
 	float 	ty_off;
 	float 	ty;
 	float 	tx;
+	t_textures	*textures;
 }			t_map;
 
 typedef struct s_key
@@ -143,6 +159,7 @@ void	ft_map_parser(t_data *mlx, char *file);
 void	ft_map_convert(t_data *mlx);
 int	ft_map_len(t_map *map);
 void	ft_map_draw(t_data *mlx);
+int is_zero_enclosed_by_one(char **matrix, int rows, int cols);
 
 /// engine & creation
 void	ft_create_level(t_data *mlx);
@@ -153,9 +170,14 @@ void    ft_key_hook(t_data *mlx);
 void    ft_square(t_data *mlx,int x, int y, int colo);
 void    ft_player(t_data *mlx, int x, int y, int colo);
 void	verline(t_data *mlx, int x, int y1, int y2, int color);
-float   dist(float ax, float ay, float bx, float by, float ang);
+float	dist(float ax, float ay, float bx, float by);
 float	ft_fixang(float a);
 float	degtorad(float a);
+void	ft_free(t_data *map);
+void	ft_get_player_pos(t_data *mlx);
+void	ft_error(char *str);
+void	ft_check_map(t_data *mlx);
+int validate_map(char **matrix, int rows, int cols);
 
 //key handler
 int	ft_key_u(int key, t_data *mlx);
