@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:36:30 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/20 12:27:15 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/20 18:10:26 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,18 @@
 # define P2 PI / 2
 # define P3 3*PI / 2
 # define DR 0.0174533
+# define DOOR 4
+
+
+typedef struct s_data t_data;
+
+typedef struct s_textures {
+	t_data	*ea;
+	t_data	*no;
+	t_data	*so;
+	t_data	*we;
+	t_data	*door[10];
+}	t_textures;
 
 typedef struct	s_map
 {
@@ -86,6 +98,7 @@ typedef struct	s_map
 	float 	ty_off;
 	float 	ty;
 	float 	tx;
+	t_textures	*textures;
 }			t_map;
 
 typedef struct s_key
