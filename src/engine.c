@@ -6,13 +6,23 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 15:18:20 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/20 17:39:28 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/20 19:53:15 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub.h"
 # include "../src/All_Textures.ppm"
 # include "Untitled.ppm"
+
+unsigned int	get_pixel(t_data *img, int x, int y)
+{
+	char	*dest;
+
+	if (x <= 0 || x >= 64 || y <= 0 || y >= 64)
+		return (1);
+	dest = img->addr + (y * img->line_length + x * (img->bits_per_pixel / 8));
+	return (*(unsigned int *)dest);
+}
 
 void	ft_vert_line(t_data *mlx)
 {
@@ -181,7 +191,15 @@ void	ft_raycast(t_data *mlx)
 			mlx->map->color = (red << 16 | green << 8 | blue);
 			while (tempx < ((mlx->map->r * 1) + 1))
 			{
-				my_mlx_pixel_put(mlx, tempx, y + mlx->map->lineo, mlx->map->color);
+				if (mlx->map->hmt == 0)
+					my_mlx_pixel_put(mlx, tempx, y + mlx->map->lineo, get_pixel(mlx->map->textures->no, mlx->map->tx, mlx->map->ty));
+				else if (mlx->map->hmt == 3)
+					my_mlx_pixel_put(mlx, tempx, y + mlx->map->lineo, get_pixel(mlx->map->textures->ea, mlx->map->tx, mlx->map->ty));
+				else if (mlx->map->hmt == 1)
+					my_mlx_pixel_put(mlx, tempx, y + mlx->map->lineo, get_pixel(mlx->map->textures->so, mlx->map->tx, mlx->map->ty));
+				else if (mlx->map->hmt == 2)
+					my_mlx_pixel_put(mlx, tempx, y + mlx->map->lineo, get_pixel(mlx->map->textures->we, mlx->map->tx, mlx->map->ty));
+				// my_mlx_pixel_put(mlx, tempx, y + mlx->map->lineo, mlx->map->color);
 				tempx++;
 			}
 			mlx->map->ty += mlx->map->ty_step;
@@ -205,8 +223,34 @@ int ft_draw(t_data *mlx)
 	return (0);
 }
 
+static t_data *load(t_data *mlx, char *s)
+{
+	t_data	*data;
+	int		a;
+	int		b;
+
+	data = malloc(sizeof(t_data));
+	a = 64;
+	b = 64;
+	data->img = mlx_png_file_to_image(mlx->mlx_ptr, s, &a, &b);
+	if (data->img == NULL)
+	{
+		free(data);
+		return (NULL);
+	}
+	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel,
+			&data->line_length, &data->endian);
+	return (data);
+	
+}
+
 void	ft_create_level(t_data *mlx)
 {
+	mlx->map->textures = malloc(sizeof(t_textures));
+	mlx->map->textures->ea = load(mlx, "src/wall_ea.png");
+	mlx->map->textures->no = load(mlx, "src/wall_no.png");
+	mlx->map->textures->so = load(mlx, "src/wall_so.png");
+	mlx->map->textures->we = load(mlx, "src/wall_we.png");
 	mlx->map->color = 0x00FFFF;
 	mlx->map->depth = (int *)malloc(sizeof(float) * 1200);
 	ft_map_convert(mlx);
