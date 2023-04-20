@@ -6,7 +6,7 @@
 #    By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 16:40:12 by mtoia             #+#    #+#              #
-#    Updated: 2023/04/07 16:04:03 by mtoia            ###   ########.fr        #
+#    Updated: 2023/04/17 17:57:25 by mtoia            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,11 +16,12 @@ C_LGRN = \033[92m
 C_LMGN = \033[95m
 C_END = \033[0m
 
-SRC = src/main.c src/map.c src/engine.c src/daw.c src/utils.c src/man_key.c src/conversion.c
+SRC = src/main.c src/map.c src/checker_map.c src/conversion.c src/draw.c src/engine.c src/man_key.c src/utils.c \
+		src/player.c
 
 MLX = ./libmlx.dylib
 
-CC = gcc -g
+CC = gcc -O3
 
 FLAGS = -Werror -Wextra -Wall -g
 
