@@ -6,12 +6,13 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 15:18:20 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/20 12:57:40 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/04/20 17:39:28 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/cub.h"
 # include "../src/All_Textures.ppm"
+# include "Untitled.ppm"
 
 void	ft_vert_line(t_data *mlx)
 {
@@ -45,7 +46,9 @@ void	ft_vert_line(t_data *mlx)
 		mlx->map->mp = mlx->map->my * mlx->map->mapx + mlx->map->mx;
 		if (mlx->map->mp > 0 && mlx->map->mp < mlx->map->mapx * mlx->map->mapy && mlx->map->mapw[mlx->map->mp] > 0)
 		{
-			mlx->map->vmt = mlx->map->mapw[mlx->map->mp] - 1;
+			// mlx->map->vmt = mlx->map->mapw[mlx->map->mp] - 1;
+			if (mlx->map->mapw[mlx->map->mp] == DOOR)
+				mlx->map->vmt = 4;
 			mlx->map->disv = cos(degtorad(mlx->map->ra)) * (mlx->map->rx - mlx->map->px) - sin(degtorad(mlx->map->ra)) * (mlx->map->ry - mlx->map->py);
 			mlx->map->dof = 15;
 		}
@@ -90,7 +93,9 @@ void	ft_hor_line(t_data *mlx)
 		mlx->map->mp = mlx->map->my * mlx->map->mapx + mlx->map->mx;
 		if (mlx->map->mp > 0 && mlx->map->mp < mlx->map->mapx * mlx->map->mapy && mlx->map->mapw[mlx->map->mp] > 0)
 		{
-			mlx->map->hmt = mlx->map->mapw[mlx->map->mp] - 1;
+			// mlx->map->hmt = mlx->map->mapw[mlx->map->mp] - 1;
+			if (mlx->map->mapw[mlx->map->mp] == DOOR)
+				mlx->map->vmt = 4;
 			mlx->map->dish = cos(degtorad(mlx->map->ra)) * (mlx->map->rx - mlx->map->px) - sin(degtorad(mlx->map->ra)) * (mlx->map->ry - mlx->map->py);
 			mlx->map->dof = 15;
 		}
@@ -117,11 +122,11 @@ void	ft_raycast(t_data *mlx)
 		mlx->map->vx = mlx->map->rx;
 		mlx->map->vy = mlx->map->ry;
 		ft_hor_line(mlx);
-		mlx->map->color = 0x008000;
+		// mlx->map->color = 0x008000;
 		mlx->map->shade = 1;
 		if (mlx->map->disv < mlx->map->dish)
 		{
-			mlx->map->hmt = mlx->map->vmt;
+			// mlx->map->hmt = mlx->map->vmt;
 			mlx->map->shade = 0.5;
 			mlx->map->rx = mlx->map->vx;
 			mlx->map->ry = mlx->map->vy;
@@ -143,24 +148,35 @@ void	ft_raycast(t_data *mlx)
 		mlx->map->ty = mlx->map->ty_off * mlx->map->ty_step;
 		if (mlx->map->shade == 1)
 		{
+			mlx->map->hmt = 0; //Nord
 			mlx->map->tx = (int)(mlx->map->rx / 2.0) % 32;
 			if (mlx->map->ra > 180)
+			{
+				mlx->map->hmt = 1; //SUd
 				mlx->map->tx = 31 - mlx->map->tx;
+			}
 		}
 		else
 		{
+			// printf("SUCA\n");
 			mlx->map->tx = (int)(mlx->map->ry / 2.0) % 32;
+			mlx->map->hmt = 3; //Est
 			if (mlx->map->ra > 90 && mlx->map->ra < 270)
+			{
+				mlx->map->hmt = 2; //Ouest
 				mlx->map->tx = 31 - mlx->map->tx;
+			}
 		}
+		if (mlx->map->vmt > mlx->map->hmt)
+			mlx->map->hmt = 3;
 		int y;
 		y = 0;
 		while (y < mlx->map->lineh)
 		{
 			int pixel=((int)mlx->map->ty*32+(int)mlx->map->tx)*3+(mlx->map->hmt*32*32*3);
-			int red =All_Textures[pixel+0]*mlx->map->shade;
-			int green =All_Textures[pixel+1]*mlx->map->shade;
-			int blue =All_Textures[pixel+2]*mlx->map->shade;
+			int red = d_b[pixel+0]*mlx->map->shade;
+			int green = d_b[pixel+1]*mlx->map->shade;
+			int blue = d_b[pixel+2]*mlx->map->shade;
 			int tempx = mlx->map->r * 1;
 			mlx->map->color = (red << 16 | green << 8 | blue);
 			while (tempx < ((mlx->map->r * 1) + 1))
