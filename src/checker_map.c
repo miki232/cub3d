@@ -91,7 +91,7 @@ int	is_zero_enclosed_by_one(char **matrix, int rows, int cols)
 
 int validate_map(char **matrix, int rows, int cols)
 {
-    bool player_position_found = false;
+    int player_position_found = 0;
     char valid_chars[] = "7 01NSEW";
 
     // Verifica che la mappa sia circondata da muri (1)
@@ -124,11 +124,11 @@ int validate_map(char **matrix, int rows, int cols)
             }
 
             if (current_char == 'N' || current_char == 'S' || current_char == 'E' || current_char == 'W') {
-                if (player_position_found) {
+                if (player_position_found == 2) {
                     // Troppi giocatori sulla mappa
-                    return 0;
+                    return 2;
                 }
-                player_position_found = true;
+                player_position_found ++;
             }
         }
     }

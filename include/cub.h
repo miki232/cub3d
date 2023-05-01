@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 16:36:30 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/20 18:10:26 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/05/01 17:22:58 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <time.h>
 # include "../mlx/mlx.h"
 
-# define HEIGHT 500
-# define WIDTH 800
+# define HEIGHT 560
+# define WIDTH 840
 # define PI 3.1415926535
 # define P2 PI / 2
 # define P3 3*PI / 2
@@ -33,14 +33,81 @@
 
 
 typedef struct s_data t_data;
+typedef struct s_image t_image;
+typedef struct s_key t_key;
+
+typedef struct 
+{
+    int type; //static, key, enemy
+    int state; //on off
+    int map; //texture to show
+    float x,y,z; //position
+}spritess; spritess sp[5];
 
 typedef struct s_textures {
-	t_data	*ea;
-	t_data	*no;
-	t_data	*so;
-	t_data	*we;
-	t_data	*door[10];
+	t_image	*ea;
+	t_image	*no;
+	t_image	*so;
+	t_image	*we;
+	t_image	*door[10];
 }	t_textures;
+
+typedef struct s_image
+{
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}		t_image;
+
+
+typedef struct	s_multi
+{
+	float		px; //player x
+	float		py; //player y
+	float	pdx; //delta x
+	float	pdy; //delta y
+	float	pa;	//player angle
+	int		r;
+	int		mapx;
+	int		mapy;
+	int		maps;
+	int		mx;
+	int		my;
+	int		mp;
+	int		dof;
+	int		side;
+	int		vmt;
+	int		hmt;
+	int		mv;
+	int		mh;
+	int		color;
+	int		temps;
+	int		lineh;
+	int		*depth;
+	float	vx;
+	float	vy;
+	float	rx;
+	float	ry;
+	float	ra;
+	float	xo;
+	float	yo;
+	float	disv;
+	float	dish;
+	float	hx;
+	float	hy;
+	float 	dist;
+	float	lineo;
+	float	tan;
+	float	shade;
+	float	ca;
+	float 	ty_step;
+	float 	ty_off;
+	float 	ty;
+	float 	tx;
+	t_key	*key;
+}			t_multi;
 
 typedef struct	s_map
 {
@@ -114,13 +181,11 @@ typedef struct	s_data
 {
     void	*mlx_ptr;
 	void	*win_ptr;
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
+	t_image	*img;
+	t_image	*imgmlt;
 	t_key	*key;
 	t_map	*map;
+	t_multi	*multi;
 
 }				t_data;
 
@@ -149,11 +214,11 @@ typedef enum e_keys_map
 
 
 /// mlx draw
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	my_mlx_pixel_put(t_image *data, int x, int y, int color);
 void	clear(t_data *mlx);
 void	verline(t_data *mlx, int x, int y1, int y2, int color);
 void drawline(int x0, int y0, int x1, int y1, t_data *mlx);
-
+unsigned int	get_pixel(t_image *img, int x, int y);
 /// map parser
 void	ft_map_parser(t_data *mlx, char *file);
 void	ft_map_convert(t_data *mlx);
@@ -178,7 +243,8 @@ void	ft_get_player_pos(t_data *mlx);
 void	ft_error(char *str);
 void	ft_check_map(t_data *mlx);
 int validate_map(char **matrix, int rows, int cols);
-
+void    drawSprite(t_data *mlx, float px, float py, float pa, int *depth, int m, t_image *data);
+void	ft_multy_raycast(t_data *mlx);
 //key handler
 int	ft_key_u(int key, t_data *mlx);
 int	ft_key_d(int key, t_data *mlx);

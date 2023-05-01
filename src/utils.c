@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 15:21:59 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/13 13:59:22 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/05/01 15:49:53 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	ft_square(t_data *mlx, int x, int y, int colo)
 		tempx = x;
 		while (tempx < (x + 5))
 		{
-			my_mlx_pixel_put(mlx, tempx, tempy, colo);
+			my_mlx_pixel_put(mlx->img, tempx, tempy, colo);
 			tempx++;
 		}
 		tempy++;

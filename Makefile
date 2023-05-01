@@ -6,7 +6,7 @@
 #    By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/20 16:40:12 by mtoia             #+#    #+#              #
-#    Updated: 2023/04/17 17:57:25 by mtoia            ###   ########.fr        #
+#    Updated: 2023/05/01 14:39:06 by mtoia            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,7 @@ C_LMGN = \033[95m
 C_END = \033[0m
 
 SRC = src/main.c src/map.c src/checker_map.c src/conversion.c src/draw.c src/engine.c src/man_key.c src/utils.c \
-		src/player.c
+		src/player.c src/sprite.c src/mlt_play.c
 
 MLX = ./libmlx.dylib
 

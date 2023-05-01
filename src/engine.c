@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/27 15:18:20 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/20 19:53:15 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/05/01 17:27:26 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # include "../src/All_Textures.ppm"
 # include "Untitled.ppm"
 
-unsigned int	get_pixel(t_data *img, int x, int y)
+unsigned int	get_pixel(t_image *img, int x, int y)
 {
 	char	*dest;
 
@@ -122,7 +122,7 @@ void	ft_raycast(t_data *mlx)
 {
 	mlx->map->ra = ft_fixang(mlx->map->pa + 30);
 	mlx->map->r = 0;
-	while (mlx->map->r < 800)
+	while (mlx->map->r < WIDTH)
 	{
 		mlx->map->vmt = 0;
 		mlx->map->hmt = 0;
@@ -145,16 +145,16 @@ void	ft_raycast(t_data *mlx)
 		}
 		mlx->map->ca = ft_fixang(mlx->map->pa - mlx->map->ra);
 		mlx->map->dish = mlx->map->dish * cos(degtorad(mlx->map->ca));
-		mlx->map->lineh = (64 * 500) / mlx->map->dish;
+		mlx->map->lineh = (64 * HEIGHT) / mlx->map->dish;
 		mlx->map->ty_step = 32.0 / (float)mlx->map->lineh;
 		mlx->map->ty_off = 0;
-		if (mlx->map->lineh > 500)
+		if (mlx->map->lineh > HEIGHT)
 		{
-			mlx->map->ty_off = (mlx->map->lineh - 500) / 2.0;
-			mlx->map->lineh = 500;
+			mlx->map->ty_off = (mlx->map->lineh - HEIGHT) / 2.0;
+			mlx->map->lineh = HEIGHT;
 		}
 		mlx->map->depth[mlx->map->r] = mlx->map->dish;
-		mlx->map->lineo = 250 - (mlx->map->lineh >> 1);
+		mlx->map->lineo = (HEIGHT / 2) - (mlx->map->lineh >> 1);
 		mlx->map->ty = mlx->map->ty_off * mlx->map->ty_step;
 		if (mlx->map->shade == 1)
 		{
@@ -192,23 +192,23 @@ void	ft_raycast(t_data *mlx)
 			while (tempx < ((mlx->map->r * 1) + 1))
 			{
 				if (mlx->map->hmt == 0)
-					my_mlx_pixel_put(mlx, tempx, y + mlx->map->lineo, get_pixel(mlx->map->textures->no, mlx->map->tx, mlx->map->ty));
+					my_mlx_pixel_put(mlx->img, tempx, y + mlx->map->lineo, get_pixel(mlx->map->textures->no, mlx->map->tx, mlx->map->ty));
 				else if (mlx->map->hmt == 3)
-					my_mlx_pixel_put(mlx, tempx, y + mlx->map->lineo, get_pixel(mlx->map->textures->ea, mlx->map->tx, mlx->map->ty));
+					my_mlx_pixel_put(mlx->img, tempx, y + mlx->map->lineo, get_pixel(mlx->map->textures->ea, mlx->map->tx, mlx->map->ty));
 				else if (mlx->map->hmt == 1)
-					my_mlx_pixel_put(mlx, tempx, y + mlx->map->lineo, get_pixel(mlx->map->textures->so, mlx->map->tx, mlx->map->ty));
+					my_mlx_pixel_put(mlx->img, tempx, y + mlx->map->lineo, get_pixel(mlx->map->textures->so, mlx->map->tx, mlx->map->ty));
 				else if (mlx->map->hmt == 2)
-					my_mlx_pixel_put(mlx, tempx, y + mlx->map->lineo, get_pixel(mlx->map->textures->we, mlx->map->tx, mlx->map->ty));
+					my_mlx_pixel_put(mlx->img, tempx, y + mlx->map->lineo, get_pixel(mlx->map->textures->we, mlx->map->tx, mlx->map->ty));
 				// my_mlx_pixel_put(mlx, tempx, y + mlx->map->lineo, mlx->map->color);
 				tempx++;
 			}
 			mlx->map->ty += mlx->map->ty_step;
 			y++;
 		}
-		mlx->map->ra = ft_fixang(mlx->map->ra - 0.080);
+		mlx->map->ra = ft_fixang(mlx->map->ra - 0.071);
 		mlx->map->r++;
 	}
-	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img->img, 0, 0);
 }
 
 int ft_draw(t_data *mlx)
@@ -216,20 +216,26 @@ int ft_draw(t_data *mlx)
 	(void)mlx;
 	clear(mlx);
 	ft_raycast(mlx);
+	ft_multy_raycast(mlx);
 	ft_key_hook(mlx);
 	ft_map_draw(mlx);
+	drawSprite(mlx, mlx->multi->px, mlx->multi->py, mlx->multi->pa, mlx->multi->depth, 1, mlx->imgmlt);
+	drawSprite(mlx, mlx->map->px, mlx->map->py, mlx->map->pa, mlx->map->depth, 0, mlx->img);
+	sp[0].x=mlx->map->px; sp[0].y=mlx->map->py;
+	sp[1].x=mlx->multi->px; sp[1].y=mlx->multi->py;
 	mlx_hook(mlx->win_ptr, 2, (1L << 0), ft_key_d, mlx);
     mlx_hook(mlx->win_ptr, 3, 1L << 1, ft_key_u, mlx);
+	
 	return (0);
 }
 
-static t_data *load(t_data *mlx, char *s)
+static t_image *load(t_data *mlx, char *s)
 {
-	t_data	*data;
+	t_image	*data;
 	int		a;
 	int		b;
 
-	data = malloc(sizeof(t_data));
+	data = malloc(sizeof(t_image));
 	a = 64;
 	b = 64;
 	data->img = mlx_png_file_to_image(mlx->mlx_ptr, s, &a, &b);
@@ -241,7 +247,7 @@ static t_data *load(t_data *mlx, char *s)
 	data->addr = mlx_get_data_addr(data->img, &data->bits_per_pixel,
 			&data->line_length, &data->endian);
 	return (data);
-	
+
 }
 
 void	ft_create_level(t_data *mlx)
@@ -253,12 +259,22 @@ void	ft_create_level(t_data *mlx)
 	mlx->map->textures->we = load(mlx, "src/wall_we.png");
 	mlx->map->color = 0x00FFFF;
 	mlx->map->depth = (int *)malloc(sizeof(float) * 1200);
+	mlx->multi->depth = (int *)malloc(sizeof(float) * 1200);
 	ft_map_convert(mlx);
 	ft_get_player_pos(mlx);
 	mlx->map->pa = 90;
 	mlx->map->pdx = cos(degtorad(mlx->map->pa));
 	mlx->map->pdy = -sin(degtorad(mlx->map->pa));
+	mlx->multi->pa = 270;
+	mlx->multi->pdx = cos(degtorad(mlx->multi->pa));
+	mlx->multi->pdy = -sin(degtorad(mlx->multi->pa));
+	// sp[0].type=1; sp[0].state=1; sp[0].multi=0; sp[0].x=1.5*64; sp[0].y=5*64;   sp[0].z=20; //key
+    // sp[1].type=2; sp[1].state=1; sp[1].map=1; sp[1].x=1.5*64; sp[1].y=4.5*64; sp[1].z= 0; //light 1
+    // sp[2].type=2; sp[2].state=1; sp[2].map=1; sp[2].x=3.5*64; sp[2].y=4.5*64; sp[2].z= 0; //light 2
+    sp[1].type=3; sp[1].state=1; sp[1].map=2; sp[1].x=mlx->multi->px; sp[1].y=mlx->multi->py;   sp[1].z=20; //enemy
+    sp[0].type=3; sp[0].state=1; sp[0].map=2; sp[0].x=mlx->map->px; sp[0].y=mlx->map->py;   sp[0].z=20; //enemy
 	printf("player found at x: %f y: %f\n", mlx->map->px, mlx->map->py);
+	printf("second player found at x: %f y: %f\n", mlx->multi->px, mlx->multi->py);
 	mlx_loop_hook(mlx->mlx_ptr, ft_draw, mlx);
 
 }

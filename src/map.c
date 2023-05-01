@@ -6,7 +6,7 @@
 /*   By: mtoia <mtoia@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/20 17:14:41 by mtoia             #+#    #+#             */
-/*   Updated: 2023/04/20 11:53:30 by mtoia            ###   ########.fr       */
+/*   Updated: 2023/05/01 15:59:58 by mtoia            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void	ft_map_draw(t_data *mlx)
 		y += 5;
 		i++;
 	}
-	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img, 0, 0);
+	mlx_put_image_to_window(mlx->mlx_ptr, mlx->win_ptr, mlx->img->img, 0, 0);
 }
 
 void	ft_map_fill(t_data *mlx)
