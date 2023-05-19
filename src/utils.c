@@ -47,7 +47,7 @@ float	ft_fixang(float a)
 
 float	degtorad(float a)
 {
-	return (a * M_PI / 180.0);
+	return (a * PI / 180.0);
 }
 
 void	ft_error(char *str)

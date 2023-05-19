@@ -22,6 +22,8 @@
 # include "../libft/libft.h"
 # include <time.h>
 # include "../mlx/mlx.h"
+#include <sys/types.h>
+#include <unistd.h>
 
 # define HEIGHT 560
 # define WIDTH 840
@@ -36,13 +38,19 @@ typedef struct s_data t_data;
 typedef struct s_image t_image;
 typedef struct s_key t_key;
 
-typedef struct 
+typedef struct s_spritess
 {
+	float dist;
+	float dx;
+	float dy;
     int type; //static, key, enemy
     int state; //on off
     int map; //texture to show
+	float rx;
+	float ry;
     float x,y,z; //position
-}spritess; spritess sp[5];
+	t_image	*texture;
+}		t_spritess;
 
 typedef struct s_textures {
 	t_image	*ea;
@@ -64,12 +72,14 @@ typedef struct s_image
 
 typedef struct	s_multi
 {
+	int	sprit_num;
 	float		px; //player x
 	float		py; //player y
 	float	pdx; //delta x
 	float	pdy; //delta y
 	float	pa;	//player angle
 	int		r;
+	int		on;//enable sprite projectile
 	int		mapx;
 	int		mapy;
 	int		maps;
@@ -174,13 +184,14 @@ typedef struct s_key
 	int		a;
 	int		s;
 	int		d;
+	int		key;
 }		t_key;
-
 
 typedef struct	s_data
 {
     void	*mlx_ptr;
 	void	*win_ptr;
+	t_spritess *sp;
 	t_image	*img;
 	t_image	*imgmlt;
 	t_key	*key;
@@ -225,12 +236,12 @@ void	ft_map_convert(t_data *mlx);
 int	ft_map_len(t_map *map);
 void	ft_map_draw(t_data *mlx);
 int is_zero_enclosed_by_one(char **matrix, int rows, int cols);
-
+void    shoot(t_data *mlx);
 /// engine & creation
 void	ft_create_level(t_data *mlx);
 int	ft_key(int key, t_data *mlx);
 void    ft_key_hook(t_data *mlx);
-
+void    movesprite(t_data *mlx, float ex, float ey, float speed);
 //utils
 void    ft_square(t_data *mlx,int x, int y, int colo);
 void    ft_player(t_data *mlx, int x, int y, int colo);
@@ -248,5 +259,6 @@ void	ft_multy_raycast(t_data *mlx);
 //key handler
 int	ft_key_u(int key, t_data *mlx);
 int	ft_key_d(int key, t_data *mlx);
+float distance(float ax, float ay, float bx, float by);
 
 #endif
