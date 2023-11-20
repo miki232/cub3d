@@ -18,14 +18,14 @@ void	ft_mlt_key(t_data *mlx)
 	int yo = 0;
 	if (mlx->multi->key->a == 1)
 	{
-		mlx->multi->pa += 2 * 0.8;
+		mlx->multi->pa += 2 * 0.7;
 		mlx->multi->pa = ft_fixang(mlx->multi->pa);
 		mlx->multi->pdx = cos(degtorad(mlx->multi->pa));
 		mlx->multi->pdy = -sin(degtorad(mlx->multi->pa));
 	}
 	if (mlx->multi->key->d == 1)
 	{
-		mlx->multi->pa -= 2 * 0.8;
+		mlx->multi->pa -= 2 * 0.7;
 		mlx->multi->pa = ft_fixang(mlx->multi->pa);
 		mlx->multi->pdx = cos(degtorad(mlx->multi->pa));
 		mlx->multi->pdy = -sin(degtorad(mlx->multi->pa));
@@ -44,20 +44,20 @@ void	ft_mlt_key(t_data *mlx)
 	{
 		if (mlx->map->mapw[ipy * mlx->multi->mapx + ipx_add_xo] == 0)
 		{
-			mlx->multi->px += mlx->multi->pdx * 5;
+			mlx->multi->px += mlx->multi->pdx * 4;
 		}
 		if (mlx->map->mapw[ipy_add_yo * mlx->multi->mapx + ipx] == 0)
 		{
-			mlx->multi->py += mlx->multi->pdy * 5;
+			mlx->multi->py += mlx->multi->pdy * 4;
 		}
 		mlx->map->map[(int)mlx->multi->py / 64][(int)mlx->multi->px / 64] = 2;
 	}
 	if (mlx->multi->key->s == 1)
 	{
 		if (mlx->map->mapw[ipy * mlx->multi->mapx + ipx_sub_xo] == 0)
-			mlx->multi->px -= mlx->multi->pdx * 5;
+			mlx->multi->px -= mlx->multi->pdx * 4;
 		if (mlx->map->mapw[ipy_sub_yo * mlx->multi->mapx + ipx] == 0)
-			mlx->multi->py -= mlx->multi->pdy * 5;
+			mlx->multi->py -= mlx->multi->pdy * 4;
 	}
 }
 
@@ -68,14 +68,14 @@ void	ft_key_hook(t_data *mlx)
 	ft_mlt_key(mlx);
 	if (mlx->key->a == 1)
 	{
-		mlx->map->pa += 2 * 0.8;
+		mlx->map->pa += 2 * 0.7;
 		mlx->map->pa = ft_fixang(mlx->map->pa);
 		mlx->map->pdx = cos(degtorad(mlx->map->pa));
 		mlx->map->pdy = -sin(degtorad(mlx->map->pa));
 	}
 	if (mlx->key->d == 1)
 	{
-		mlx->map->pa -= 2 * 0.8;
+		mlx->map->pa -= 2 * 0.7;
 		mlx->map->pa = ft_fixang(mlx->map->pa);
 		mlx->map->pdx = cos(degtorad(mlx->map->pa));
 		mlx->map->pdy = -sin(degtorad(mlx->map->pa));
@@ -94,30 +94,25 @@ void	ft_key_hook(t_data *mlx)
 	{
 		if (mlx->map->mapw[ipy * mlx->map->mapx + ipx_add_xo] == 0)
 		{
-			mlx->map->px += mlx->map->pdx * 5;
+			mlx->map->px += mlx->map->pdx * 4;
 		}
 		if (mlx->map->mapw[ipy_add_yo * mlx->map->mapx + ipx] == 0)
 		{
-			mlx->map->py += mlx->map->pdy * 5;
+			mlx->map->py += mlx->map->pdy * 4;
 		}
 		mlx->map->map[(int)mlx->map->py / 64][(int)mlx->map->px / 64] = 2;
 	}
 	if (mlx->key->s == 1)
 	{
 		if (mlx->map->mapw[ipy * mlx->map->mapx + ipx_sub_xo] == 0)
-			mlx->map->px -= mlx->map->pdx * 5;
+			mlx->map->px -= mlx->map->pdx * 4;
 		if (mlx->map->mapw[ipy_sub_yo * mlx->map->mapx + ipx] == 0)
-			mlx->map->py -= mlx->map->pdy * 5;
+			mlx->map->py -= mlx->map->pdy * 4;
 	}
 }
 
 int	ft_key_u(int key, t_data *mlx)
 {
-	if (key == 112)
-	{
-		// mlx->sp[0].sprit_num = 2;
-		// mlx->multi->on = 0;
-	}
 	if (key == 87)
 	{
 		mlx->map->ra_step -= 0.01;
@@ -144,9 +139,8 @@ int	ft_key_u(int key, t_data *mlx)
 
 int	ft_key_d(int key, t_data *mlx)
 {
-	// printf("key = %d\n", key);
 	mlx->key->key = key;
-	if (key == 112)
+	if (key == 32) //fire
 	{
 		if (mlx->multi->sprit_num < 4)
 		{
@@ -157,8 +151,8 @@ int	ft_key_d(int key, t_data *mlx)
 			mlx->sp[mlx->multi->sprit_num - 1].y = mlx->map->py;
 			mlx->sp[mlx->multi->sprit_num - 1].z = 20;
 			mlx->multi->on = 1;
-			printf("spritnum = %d\n", mlx->multi->sprit_num);
-			printf("sps[%d].x = %f, ssp[%d].y = %f\n",mlx->multi->sprit_num - 1, mlx->sp[mlx->multi->sprit_num - 1].x, mlx->multi->sprit_num - 1,  mlx->sp[mlx->multi->sprit_num - 1].y);
+			// printf("spritnum = %d\n", mlx->multi->sprit_num);
+			// printf("sps[%d].x = %f, ssp[%d].y = %f\n",mlx->multi->sprit_num - 1, mlx->sp[mlx->multi->sprit_num - 1].x, mlx->multi->sprit_num - 1,  mlx->sp[mlx->multi->sprit_num - 1].y);
 			shoot(mlx);
 			mlx->sp[mlx->multi->sprit_num - 1].dist = distance(mlx->map->px, mlx->map->py, mlx->sp[mlx->multi->sprit_num - 1].rx, mlx->sp[mlx->multi->sprit_num - 1].ry);
 			mlx->sp[mlx->multi->sprit_num - 1].dx = (mlx->sp[mlx->multi->sprit_num - 1].rx - mlx->map->px) / mlx->sp[mlx->multi->sprit_num - 1].dist;

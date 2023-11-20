@@ -35,20 +35,17 @@ void	ft_vert_line2(t_data *mlx)
 	{
 		mlx->multi->rx = mlx->multi->px;
 		mlx->multi->ry = mlx->multi->py;
-		mlx->multi->dof = 15;
+		mlx->multi->dof = 10;
 	}
-	while (mlx->multi->dof < 15)
+	while (mlx->multi->dof < 10)
 	{
 		mlx->multi->mx = (int)(mlx->multi->rx) >> 6;
 		mlx->multi->my = (int)(mlx->multi->ry) >> 6;
 		mlx->multi->mp = mlx->multi->my * mlx->multi->mapx + mlx->multi->mx;
 		if (mlx->multi->mp > 0 && mlx->multi->mp < mlx->multi->mapx * mlx->multi->mapy && mlx->map->mapw[mlx->multi->mp] > 0)
 		{
-			// mlx->multi->vmt = mlx->multi->multiw[mlx->multi->mp] - 1;
-			if (mlx->map->mapw[mlx->multi->mp] == DOOR)
-				mlx->multi->vmt = 4;
 			mlx->multi->disv = cos(degtorad(mlx->multi->ra)) * (mlx->multi->rx - mlx->multi->px) - sin(degtorad(mlx->multi->ra)) * (mlx->multi->ry - mlx->multi->py);
-			mlx->multi->dof = 15;
+			mlx->multi->dof = 10;
 		}
 		else
 		{
@@ -82,20 +79,17 @@ void	ft_hor_line2(t_data *mlx)
 	{
 		mlx->multi->rx = mlx->multi->px;
 		mlx->multi->ry = mlx->multi->py;
-		mlx->multi->dof = 15;
+		mlx->multi->dof = 10;
 	}
-	while (mlx->multi->dof < 15)
+	while (mlx->multi->dof < 10)
 	{
 		mlx->multi->mx = (int)(mlx->multi->rx) >> 6;
 		mlx->multi->my = (int)(mlx->multi->ry) >> 6;
 		mlx->multi->mp = mlx->multi->my * mlx->multi->mapx + mlx->multi->mx;
 		if (mlx->multi->mp > 0 && mlx->multi->mp < mlx->multi->mapx * mlx->multi->mapy && mlx->map->mapw[mlx->multi->mp] > 0)
 		{
-			// mlx->multi->hmt = mlx->multi->multiw[mlx->multi->mp] - 1;
-			if (mlx->map->mapw[mlx->multi->mp] == DOOR)
-				mlx->multi->vmt = 4;
 			mlx->multi->dish = cos(degtorad(mlx->multi->ra)) * (mlx->multi->rx - mlx->multi->px) - sin(degtorad(mlx->multi->ra)) * (mlx->multi->ry - mlx->multi->py);
-			mlx->multi->dof = 15;
+			mlx->multi->dof = 10;
 		}
 		else
 		{
@@ -156,7 +150,6 @@ void	ft_multy_raycast(t_data *mlx)
 		}
 		else
 		{
-			// printf("SUCA\n");
 			mlx->multi->tx = (int)(mlx->multi->ry / 2.0) % 32;
 			mlx->multi->hmt = 3; //Est
 			if (mlx->multi->ra > 90 && mlx->multi->ra < 270)
@@ -171,11 +164,6 @@ void	ft_multy_raycast(t_data *mlx)
 		y = 0;
 		while (y < mlx->multi->lineh)
 		{
-			// int pixel=((int)mlx->map->ty*32+(int)mlx->map->tx)*3+(mlx->map->hmt*32*32*3);
-			// int red = d_b[pixel+0]*mlx->map->shade;
-			// int green = d_b[pixel+1]*mlx->map->shade;
-			// int blue = d_b[pixel+2]*mlx->map->shade;
-			// mlx->map->color = (red << 16 | green << 8 | blue);
 			int tempx = mlx->multi->r * 1;
 			while (tempx < ((mlx->multi->r * 1) + 1))
 			{ 
@@ -187,7 +175,6 @@ void	ft_multy_raycast(t_data *mlx)
 					my_mlx_pixel_put(mlx->imgmlt, tempx, y + mlx->multi->lineo, get_pixel(mlx->map->textures->so, mlx->multi->tx, mlx->multi->ty));
 				else if (mlx->multi->hmt == 2)
 					my_mlx_pixel_put(mlx->imgmlt, tempx, y + mlx->multi->lineo, get_pixel(mlx->map->textures->we, mlx->multi->tx, mlx->multi->ty));
-				// my_mlx_pixel_put(mlx->imgmlt, tempx, y + mlx->multi->lineo, 0xFFFFFF);
 				tempx++;
 			}
 			mlx->multi->ty += mlx->multi->ty_step;

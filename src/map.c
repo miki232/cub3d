@@ -154,7 +154,7 @@ void	ft_map_fill(t_data *mlx)
 	int i;
 
 	i = 0;
-	printf("NUMBERS: %f\n", calculate_probabilities(mlx));
+	// printf("NUMBERS: %f\n", calculate_probabilities(mlx));
 	if (calculate_probabilities(mlx) > 1)
 	{
 		mlx->map->map = (char **)ft_calloc(mlx->map->maprow + 1, sizeof(char *));
@@ -188,7 +188,7 @@ void	ft_map_fill(t_data *mlx)
 			update_probabilities(mlx->map->map[i], mlx);
 			if ((int)ft_strlen(mlx->map->map[i]) > mlx->map->l_mapex)
 				mlx->map->l_mapex = ft_strlen(mlx->map->map[i]);
-			printf("%s\n", mlx->map->map[i]);
+			// printf("%s\n", mlx->map->map[i]);
 			i++;
 		}
 		if (!validate_map(mlx->map->map, mlx->map->maprow, mlx->map->l_mapex))
@@ -218,28 +218,15 @@ void	ft_map_parser(t_data *mlx, char *file)
 	ft_map_fill(mlx);
 	///debug line
 	ret = 0;
-	printf("TEMPMAP\n");
+	// printf("TEMPMAP\n");
 	ft_check_map(mlx);
-	while (mlx->map->tempmap[ret] != NULL)
-	{
-		printf("%s", mlx->map->tempmap[ret]);
-		ret++;
-	}
-	printf("\n\n");
+	
+	// printf("\n\n");
 	ret = 0;
-	printf("%d %d\n", mlx->map->l_mapex, mlx->map->maprow);
-	while (mlx->map->map[ret] != NULL)
-	{
-		for (int i = 0; i < (int)ft_strlen(mlx->map->map[ret]); i++)
-			printf("%c", mlx->map->map[ret][i]);
-		printf("\n");
-		ret++;
-	}
-	//end debug
 	if (is_zero_enclosed_by_one(mlx->map->map, mlx->map->maprow, mlx->map->l_mapex))
 		printf("OK\n");
 	else
 		ft_error("MAP ERROR\n");
-	printf("\nl_mapex = %d row = %d\n", mlx->map->l_mapex, mlx->map->maprow);
+	// printf("\nl_mapex = %d row = %d\n", mlx->map->l_mapex, mlx->map->maprow);
 	close(fd);
 }

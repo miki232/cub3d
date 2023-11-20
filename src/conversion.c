@@ -47,15 +47,9 @@ void	ft_map_convert(t_data *mlx)
 		}
 		i++;
 	}
-	printf("mapx: %d, mapy: %d m_len : %d\n", mlx->map->mapx, mlx->map->mapy, m_len); ///debug
+	// printf("mapx: %d, mapy: %d m_len : %d\n", mlx->map->mapx, mlx->map->mapy, m_len); ///debug
 	i = 0;
-	while (i < m_len)
-	{
-		if (i % mlx->map->mapx == 0)
-			printf("  %d \n", i);
-		printf("%d", mlx->map->mapw[i]);
-		i++;
-	}
+	
 	printf("  %d \n", i);
 	///end debug
 }
